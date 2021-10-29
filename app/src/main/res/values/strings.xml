@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Notebook</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_calendar">Calendar</string>
+    <string name="title_notes">Notes</string>
+    <string name="title_new_note">New note</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_note">Новое событие</string>
+    <string name="start">Начало:</string>
+    <string name="finish">Окончание:</string>
+    <string name="note">Событие</string>
+    <string name="description">Описание</string>
+    <string name="add_note">Добавить событие</string>
+    <string name="change_note">Изменить событие</string>
+    <string name="delete_note">Удалить событие</string>
+
+    <string name="material_calendar_monday">Пн</string>
+    <string name="material_calendar_tuesday">Вт</string>
+    <string name="material_calendar_wednesday">Ср</string>
+    <string name="material_calendar_thursday">Чт</string>
+    <string name="material_calendar_friday">Пт</string>
+    <string name="material_calendar_saturday">Сб</string>
+    <string name="material_calendar_sunday">Вс</string>
+
+    <array name="material_calendar_months_array">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </array>
+
+    <string name="material_calendar_today_button">Today</string>
+    <string name="material_calendar_positive_button">OK</string>
+    <string name="material_calendar_negative_button">Cancel</string>
+    <string name="notes_for">События на</string>
+
+
+</resources>
