@@ -1,11 +1,15 @@
 package com.lealpy.notebook.data.models
 
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import java.sql.Timestamp
 
-data class Note (
-    val id : Long,
-    val dateStart : Timestamp,
-    val dateFinish : Timestamp,
-    val name : String,
-    val description : String
-)
+open class Note (
+
+    @PrimaryKey
+    var id : Long? = null,
+    var dateStart : Long? = null,
+    var dateFinish : Long? = null,
+    var name : String? = null,
+    var description : String? = null
+) : RealmObject()
