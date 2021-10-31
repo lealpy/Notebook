@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lealpy.notebook.data.models.Note
+import com.lealpy.notebook.data.repository.NotesRepository
 import io.realm.Realm
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -12,15 +13,13 @@ import java.util.*
 
 class NoteDescriptionViewModel : ViewModel() {
 
-    private var realm = Realm.getDefaultInstance()
+    private var notesRepository = NotesRepository()
 
 //-------------------------Присвоить IDшник в LiveData-----------------------------------------//
     private val _idLD = MutableLiveData<Long>(1)
     val idLD: LiveData<Long> = _idLD
 
-    val note = realm.where(Note::class.java)
-        .equalTo("id", idLD.value)
-        .findFirst()
+    val note = notesRepository.getNoteFromDB(idLD.value)
 
     val yearFinish = SimpleDateFormat("yyyy").format(note?.dateFinish?.let { Date(it) }).toInt()
     val monthFinish = SimpleDateFormat("MM").format(note?.dateFinish?.let { Date(it) }).toInt()
@@ -58,20 +57,12 @@ class NoteDescriptionViewModel : ViewModel() {
     }
 
     fun changeNoteInDB(id: Long?, dateStart: Long, dateFinish: Long, name: String, description: String) {
-        try {
 
-            realm.beginTransaction()
+        notesRepository.changeNoteInDB(id, dateStart, dateFinish, name, description)
+    }
 
-            val note = Note(id, dateStart, dateFinish, name, description)
-
-            realm.copyToRealmOrUpdate(note)
-            realm.commitTransaction()
-
-            Log.d("MyLog", "Элемент изменен в БД")
-
-        } catch (e : Exception) {
-            Log.d("MyLog", "Ошибка при изменении элемента в БД: $e")
-        }
+    fun deleteNoteFromDB() {
+        notesRepository.deleteNoteFromDB(note?.id)
     }
 
 }

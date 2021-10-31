@@ -30,9 +30,7 @@ class NotesAdapter(
                     }
                 }
             }
-
         }
-
         fun bind (note : Note) {
             binding.noteName.text = "Событие : ${note.name}"
             binding.noteDescription.text = "Описание: ${note.description}"
@@ -70,10 +68,6 @@ class NotesAdapter(
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Note, newItem: Note) =
             oldItem == newItem
-    }
-
-    fun getNoteItem(position: Int): Note {
-        return getItem(position)
     }
 
     fun getTimeStringByTimestamp(timestamp : Long?) : String {

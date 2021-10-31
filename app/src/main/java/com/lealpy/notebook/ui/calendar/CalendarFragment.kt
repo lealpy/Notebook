@@ -25,6 +25,8 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private val binding get() = _binding!!
 
+    private val calendar = Calendar.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,11 +39,12 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        Calendar.SUNDAY
 
 
      //   DatePickerDialog(this, this, initialYear, initialMonth, initialDay).show()
     //    TimePickerDialog
+
+
 
 
 
@@ -59,8 +62,6 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         super.onDestroyView()
         _binding = null
     }
-
-    private val calendar = Calendar.getInstance()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val year = calendar.get(Calendar.YEAR)

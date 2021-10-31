@@ -22,19 +22,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Realm.init(this)
-
         val configuration = RealmConfiguration.Builder()
             .name("Notes.db")
             .deleteRealmIfMigrationNeeded()
             .schemaVersion(0)
             .build()
-
         Realm.setDefaultConfiguration(configuration)
-
-
-
-
-
 
         val navView: BottomNavigationView = binding.navView
 

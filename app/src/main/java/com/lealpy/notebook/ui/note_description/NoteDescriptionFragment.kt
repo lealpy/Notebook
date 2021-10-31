@@ -174,7 +174,15 @@ class NoteDescriptionFragment : Fragment() {
             val name = binding.noteName.text.toString()
             val description = binding.noteDescription.text.toString()
 
-            viewModel.changeNoteInDB(id, dateStart, dateFinish, name, description)
+            if (name != "") {
+                viewModel.changeNoteInDB(id, dateStart, dateFinish, name, description)
+                startNotesFragment()
+            }
+            else Toast.makeText(context, "Введите название события", Toast.LENGTH_SHORT)
+        }
+
+        binding.deleteTaskButton.setOnClickListener {
+            viewModel.deleteNoteFromDB()
             startNotesFragment()
         }
     }
