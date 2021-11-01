@@ -16,8 +16,22 @@ import com.lealpy.notebook.ui.notes.NotesFragment
 class NewNoteFragment : Fragment() {
 
     private lateinit var viewModel: NewNoteViewModel
+
     private var _binding: FragmentNewNoteBinding? = null
     private val binding get() = _binding!!
+
+    private val onStartDateSetClickListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        viewModel.onDateStartPicked(year, month, dayOfMonth)
+    }
+    private val onFinishDateSetClickListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        viewModel.onDateFinishPicked(year, month, dayOfMonth)
+    }
+    private val onStartTimeSetClickListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+        viewModel.onTimeStartPicked(hour, minute)
+    }
+    private val onFinishTimeSetClickListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+        viewModel.onTimeFinishPicked(hour, minute)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -150,24 +164,6 @@ class NewNoteFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-
-
-    private val onStartDateSetClickListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-        viewModel.onDateStartPicked(year, month, dayOfMonth)
-    }
-
-    private val onFinishDateSetClickListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-        viewModel.onDateFinishPicked(year, month, dayOfMonth)
-    }
-
-    private val onStartTimeSetClickListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
-        viewModel.onTimeStartPicked(hour, minute)
-    }
-
-    private val onFinishTimeSetClickListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
-        viewModel.onTimeFinishPicked(hour, minute)
     }
 
 }
