@@ -10,213 +10,186 @@ import java.util.*
 
 class NewNoteViewModel : ViewModel() {
 
-//-----------------Repository-----------------------------------------------------
+    private val notesRepository = NotesRepository()
 
-    private var notesRepository = NotesRepository()
+    private var yearStart = SimpleDateFormat("yyyy").format(Date()).toInt()
+    private var monthStart = SimpleDateFormat("MM").format(Date()).toInt() - 1
+    private var dayStart = SimpleDateFormat("dd").format(Date()).toInt()
+    private var hourStart = SimpleDateFormat("HH").format(Date()).toInt()
+    private var minuteStart = SimpleDateFormat("mm").format(Date()).toInt()
+    private var yearFinish = yearStart
+    private var monthFinish = monthStart
+    private var dayFinish = dayStart
+    private var hourFinish = hourStart + 1
+    private var minuteFinish = minuteStart
 
-    fun addNoteToDB() {
-        val note = Note(
-            notesRepository.getLastID(),
-            _timestampStart.value,
-            _timestampFinish.value,
-            _noteName.value,
-            _description.value)
-
-        notesRepository.addNoteToDB(note)
-    }
-
-//-----------------LD for date and time values-------------------------------------
-
-    private val currentYear = SimpleDateFormat("yyyy").format(Date()).toInt()
-    private val currentMonth = SimpleDateFormat("MM").format(Date()).toInt()
-    private val currentDay = SimpleDateFormat("dd").format(Date()).toInt()
-    private val currentHour = SimpleDateFormat("HH").format(Date()).toInt()
-    private val currentMinute = SimpleDateFormat("mm").format(Date()).toInt()
-
-    private val _yearStart = MutableLiveData<Int>(currentYear)
-    val yearStart: LiveData<Int> = _yearStart
-
-    private val _monthStart = MutableLiveData<Int>(currentMonth - 1)
-    val monthStart: LiveData<Int> = _monthStart
-
-    private val _dayStart = MutableLiveData<Int>(currentDay)
-    val dayStart: LiveData<Int> = _dayStart
-
-    private val _hourStart = MutableLiveData<Int>(currentHour)
-    val hourStart: LiveData<Int> = _hourStart
-
-    private val _minuteStart = MutableLiveData<Int>(currentMinute)
-    val minuteStart: LiveData<Int> = _minuteStart
-
-    private val _yearFinish = MutableLiveData<Int>(currentYear)
-    val yearFinish: LiveData<Int> = _yearFinish
-
-    private val _monthFinish = MutableLiveData<Int>(currentMonth - 1)
-    val monthFinish: LiveData<Int> = _monthFinish
-
-    private val _dayFinish = MutableLiveData<Int>(currentDay)
-    val dayFinish: LiveData<Int> = _dayFinish
-
-    private val _hourFinish = MutableLiveData<Int>(currentHour + 1)
-    val hourFinish: LiveData<Int> = _hourFinish
-
-    private val _minuteFinish = MutableLiveData<Int>(currentMinute)
-    val minuteFinish: LiveData<Int> = _minuteFinish
-
-//-----------------LD for Timestamp-------------------------------------
-
-    private val _timestampStart = MutableLiveData<Long> (
-        getTimestamp(_yearStart.value, _monthStart.value, _dayStart.value, _hourStart.value, _minuteStart.value)
-    )
-    val timestampStart : LiveData<Long> = _timestampStart
-
-    private val _timestampFinish = MutableLiveData<Long> (
-        getTimestamp(_yearFinish.value, _monthFinish.value, _dayFinish.value, _hourFinish.value, _minuteFinish.value)
-    )
-    val timestampFinish : LiveData<Long> = _timestampFinish
-
-
-
-    private fun getTimestamp(year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) : Long {
-        val calendar: Calendar = if(year != null && month != null && day != null && hour != null && minute != null) { // Криво, мне не нравится
-            GregorianCalendar(year, month, day, hour, minute)
-        } else {
-            GregorianCalendar(1970, 0, 1, 0, 0)
-        }
-        return calendar.timeInMillis
-    }
-
-//-----------------LD for view fields-------------------------------------
-
-    private val _noteName = MutableLiveData<String> ("")
-    val noteName : LiveData<String> = _noteName
-
-    private val _description = MutableLiveData<String> ("")
-    val description : LiveData<String> = _description
+    private var noteName = ""
+    private var noteDescription = ""
 
     private val _dateStringStart = MutableLiveData<String> (
-        getDateString(_yearStart.value, _monthStart.value, _dayStart.value)
+        getDateString(yearStart, monthStart, dayStart)
     )
     val dateStringStart : LiveData<String> = _dateStringStart
 
     private val _dateStringFinish = MutableLiveData<String> (
-        getDateString(_yearFinish.value, _monthFinish.value, _dayFinish.value)
+        getDateString(yearFinish, monthFinish, dayFinish)
     )
     val dateStringFinish : LiveData<String> = _dateStringFinish
 
     private val _timeStringStart = MutableLiveData<String> (
-        getTimeString(_hourStart.value, _minuteStart.value)
+        getTimeString(hourStart, minuteStart)
     )
     val timeStringStart : LiveData<String> = _timeStringStart
 
     private val _timeStringFinish = MutableLiveData<String> (
-        getTimeString(_hourFinish.value, _minuteFinish.value)
+        getTimeString(hourFinish, minuteFinish)
     )
     val timeStringFinish : LiveData<String> = _timeStringFinish
 
+    private val _dateStartPickerData = MutableLiveData<DatePickerData?> (null)
+    val dateStartPickerData : LiveData<DatePickerData?> = _dateStartPickerData
+
+    private val _dateFinishPickerData = MutableLiveData<DatePickerData?> (null)
+    val dateFinishPickerData : LiveData<DatePickerData?> = _dateFinishPickerData
+
+    private val _timeStartPickerData = MutableLiveData<TimePickerData?> (null)
+    val timeStartPickerData : LiveData<TimePickerData?> = _timeStartPickerData
+
+    private val _timeFinishPickerData = MutableLiveData<TimePickerData?> (null)
+    val timeFinishPickerData : LiveData<TimePickerData?> = _timeFinishPickerData
 
 
-    private fun getDateString(year : Int?, month : Int?, day : Int?) : String {
-        return if(year != null && month != null && day != null) {
-            SimpleDateFormat("dd.MM.yyyy").format(Date(getTimestamp(year, month, day, 0, 0)))
-        }
-        else ""
+
+    private fun getTimestamp(year: Int, month: Int, day: Int, hour: Int, minute: Int) : Long {
+        val calendar: Calendar = GregorianCalendar(year, month, day, hour, minute)
+        return calendar.timeInMillis
     }
 
-    private fun getTimeString(hour : Int?, minute : Int?) : String {
-        return if(hour != null && minute != null) {
-            SimpleDateFormat("HH:mm").format(Date(getTimestamp(1970, 0, 1, hour, minute)))
-        }
-        else ""
+
+
+    private fun getDateString(year : Int, month : Int, day : Int) : String {
+        return SimpleDateFormat("dd.MM.yyyy").format(Date(getTimestamp(year, month, day, 0, 0)))
     }
 
-    //-----------------Refresh Live Data functions-------------------------------------
-
-    private fun refreshTimestamp() {
-        _timestampStart.value = getTimestamp(_yearStart.value, _monthStart.value, _dayStart.value, _hourStart.value, _minuteStart.value)
-        _timestampFinish.value = getTimestamp(_yearFinish.value, _monthFinish.value, _dayFinish.value, _hourFinish.value, _minuteFinish.value)
+    private fun getTimeString(hour : Int, minute : Int) : String {
+        return SimpleDateFormat("HH:mm").format(Date(getTimestamp(1970, 0, 1, hour, minute)))
     }
+
+
 
     private fun refreshDateLD() {
-        _dateStringStart.value = getDateString(_yearStart.value, _monthStart.value, _dayStart.value)
-        _dateStringFinish.value = getDateString(_yearFinish.value, _monthFinish.value, _dayFinish.value)
-        refreshTimestamp()
+        _dateStringStart.value = getDateString(yearStart, monthStart, dayStart)
+        _dateStringFinish.value = getDateString(yearFinish, monthFinish, dayFinish)
     }
 
     private fun refreshTimeLD() {
-        _timeStringStart.value = getTimeString(_hourStart.value, _minuteStart.value)
-        _timeStringFinish.value = getTimeString(_hourFinish.value, _minuteFinish.value)
-        refreshTimestamp()
+        _timeStringStart.value = getTimeString(hourStart, minuteStart)
+        _timeStringFinish.value = getTimeString(hourFinish, minuteFinish)
     }
 
-    //-----------------callbacks from fragment-------------------------------------
 
-    private fun equateStartToFinish () {
-        _yearStart.value = _yearFinish.value
-        _monthStart.value = _monthFinish.value
-        _dayStart.value = _dayFinish.value
-        _hourStart.value = _hourFinish.value
-        _minuteStart.value = _minuteFinish.value
+
+    fun onDateStartPickerClicked() {
+        val datePickerData = DatePickerData (yearStart, monthStart, dayStart)
+        _dateStartPickerData.value = datePickerData
+    }
+
+    fun onDateFinishPickerClicked() {
+        val datePickerData = DatePickerData (yearFinish, monthFinish, dayFinish)
+        _dateFinishPickerData.value = datePickerData
+    }
+
+    fun onTimeStartPickerClicked() {
+        val timePickerData = TimePickerData (hourStart, minuteStart)
+        _timeStartPickerData.value = timePickerData
+    }
+
+    fun onTimeFinishPickerClicked() {
+        val timePickerData = TimePickerData (hourFinish, minuteFinish)
+        _timeFinishPickerData.value = timePickerData
+    }
+
+
+
+    fun onDateStartPicked(year: Int, month: Int, dayOfMonth: Int) {
+        yearStart = year
+        monthStart = month
+        dayStart = dayOfMonth
+        _dateStartPickerData.value = null
+        checkSelectedStartBeforeFinish()
+    }
+
+    fun onDateFinishPicked(year: Int, month: Int, dayOfMonth: Int) {
+        yearFinish = year
+        monthFinish = month
+        dayFinish = dayOfMonth
+        _dateFinishPickerData.value = null
+        checkSelectedFinishAfterStart()
+    }
+
+    fun onTimeStartPicked(hour: Int, minute: Int) {
+        hourStart = hour
+        minuteStart = minute
+        _timeStartPickerData.value = null
+        checkSelectedStartBeforeFinish()
+    }
+
+    fun onTimeFinishPicked(hour: Int, minute: Int) {
+        hourFinish = hour
+        minuteFinish = minute
+        _timeFinishPickerData.value = null
+        checkSelectedFinishAfterStart()
+    }
+
+
+
+    private fun checkSelectedStartBeforeFinish() {
+        val timestampStart = getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
+        val timestampFinish = getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
+        if (timestampStart > timestampFinish ) {
+            yearFinish = yearStart
+            monthFinish = monthStart
+            dayFinish = dayStart
+            hourFinish = hourStart
+            minuteFinish = minuteStart
+        }
         refreshDateLD()
         refreshTimeLD()
     }
 
-    private fun equateFinishToStart () {
-        _yearFinish.value = _yearStart.value
-        _monthFinish.value = _monthStart.value
-        _dayFinish.value = _dayStart.value
-        _hourFinish.value = _hourStart.value
-        _minuteFinish.value = _minuteStart.value
+    private fun checkSelectedFinishAfterStart() {
+        val timestampStart = getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
+        val timestampFinish = getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
+        if (timestampStart > timestampFinish ) {
+            yearStart = yearFinish
+            monthStart = monthFinish
+            dayStart = dayFinish
+            hourStart = hourFinish
+            minuteStart = minuteFinish
+        }
         refreshDateLD()
         refreshTimeLD()
     }
 
-    fun onDateStartClicked(year: Int, month: Int, day: Int) {
-        _yearStart.value = year
-        _monthStart.value = month
-        _dayStart.value = day
-        refreshDateLD()
-        if (_timestampFinish.value != null && _timestampStart.value != null && _timestampFinish.value!! < _timestampStart.value!!) {
-            equateFinishToStart ()
-        }
-    }
 
-    fun onDateFinishClicked(year: Int, month: Int, day: Int) {
-        _yearFinish.value = year
-        _monthFinish.value = month
-        _dayFinish.value = day
-        refreshDateLD()
-        if (_timestampFinish.value != null && _timestampStart.value != null && _timestampFinish.value!! < _timestampStart.value!!) {
-            equateStartToFinish()
-        }
-    }
-
-    fun onTimeStartClicked(hour: Int, minute: Int) {
-        _hourStart.value = hour
-        _minuteStart.value = minute
-        refreshTimeLD()
-        if (_timestampFinish.value != null && _timestampStart.value != null && _timestampFinish.value!! < _timestampStart.value!!) {
-            equateFinishToStart()
-        }
-    }
-
-    fun onTimeFinishClicked(hour: Int, minute: Int) {
-        _hourFinish.value = hour
-        _minuteFinish.value = minute
-        refreshTimeLD()
-        if (_timestampFinish.value != null && _timestampStart.value != null && _timestampFinish.value!! < _timestampStart.value!!) {
-            equateStartToFinish ()
-        }
-    }
 
     fun onAddNoteClicked(name: String, description: String) {
-        _noteName.value = name
-        _description.value = description
+        noteName = name
+        noteDescription = description
+    }
+
+    fun addNoteToDB() {
+        val note = Note(
+            notesRepository.getNewID(),
+            getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart),
+            getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish),
+            noteName,
+            noteDescription)
+
+        notesRepository.addNoteToDB(note)
     }
 
 }
-
-
 
 
 

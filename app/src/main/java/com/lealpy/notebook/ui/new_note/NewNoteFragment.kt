@@ -36,6 +36,8 @@ class NewNoteFragment : Fragment() {
     }
 
     private fun initObservers() {
+
+
         viewModel.dateStringStart.observe(viewLifecycleOwner) {
             binding.dateStart.text = it
         }
@@ -51,68 +53,81 @@ class NewNoteFragment : Fragment() {
         viewModel.timeStringFinish.observe(viewLifecycleOwner) {
             binding.timeFinish.text = it
         }
+        
+        viewModel.dateStartPickerData.observe(viewLifecycleOwner) { datePickerData ->
+            if(datePickerData != null) {
+                DatePickerDialog(
+                    requireContext(),
+                    onStartDateSetClickListener,
+                    datePickerData.year,
+                    datePickerData.month,
+                    datePickerData.day
+                ).show()
+            }
+        }
+
+        viewModel.dateFinishPickerData.observe(viewLifecycleOwner) { datePickerData ->
+            if(datePickerData != null) {
+                DatePickerDialog(
+                    requireContext(),
+                    onFinishDateSetClickListener,
+                    datePickerData.year,
+                    datePickerData.month,
+                    datePickerData.day
+                ).show()
+            }
+        }
+
+        viewModel.timeStartPickerData.observe(viewLifecycleOwner) { timePickerData ->
+            if(timePickerData != null) {
+                TimePickerDialog(
+                    requireContext(),
+                    onStartTimeSetClickListener,
+                    timePickerData.hour,
+                    timePickerData.minute,
+                    true
+                ).show()
+            }
+        }
+
+        viewModel.timeFinishPickerData.observe(viewLifecycleOwner) { timePickerData ->
+            if(timePickerData != null) {
+                TimePickerDialog(
+                    requireContext(),
+                    onFinishTimeSetClickListener,
+                    timePickerData.hour,
+                    timePickerData.minute,
+                    true
+                ).show()
+            }
+        }
+        
     }
 
     private fun initViews() {
 
-//<-------------------------Date and time pickers-----------------------------------------...
-
         binding.dateStart.setOnClickListener {
-            DatePickerDialog(
-                requireContext(),
-                { _, year, month, day ->
-                    viewModel.onDateStartClicked(year, month, day)
-                },
-                viewModel.yearStart.value!!, /////////////////////////////////////////////////////////////// null-safety !!  shot in my leg
-                viewModel.monthStart.value!!,
-                viewModel.dayStart.value!!)
-                .show()
+            viewModel.onDateStartPickerClicked()
         }
 
         binding.dateFinish.setOnClickListener {
-            DatePickerDialog(
-                requireContext(),
-                { _, year, month, day ->
-                    viewModel.onDateFinishClicked(year, month, day)
-                },
-                viewModel.yearFinish.value!!,
-                viewModel.monthFinish.value!!,
-                viewModel.dayFinish.value!!)
-                .show()
+            viewModel.onDateFinishPickerClicked()
         }
 
         binding.timeStart.setOnClickListener {
-            TimePickerDialog(
-                context,
-                { _, hour, minute ->
-                    viewModel.onTimeStartClicked(hour, minute)
-                },
-                viewModel.hourStart.value!!,
-                viewModel.minuteStart.value!!,
-                true)
-                .show()
+            viewModel.onTimeStartPickerClicked()
         }
 
         binding.timeFinish.setOnClickListener {
-            TimePickerDialog(
-                context,
-                { _, hour, minute ->
-                    viewModel.onTimeFinishClicked(hour, minute)
-                },
-                viewModel.hourFinish.value!!,
-                viewModel.minuteFinish.value!!,
-                true)
-                .show()
+            viewModel.onTimeFinishPickerClicked()
         }
-
-//...-------------------------Date and time pickers----------------------------------------->
 
         binding.addNoteButton.setOnClickListener {
             val name = binding.noteName.text.toString()
             val description = binding.noteDescription.text.toString()
             viewModel.onAddNoteClicked(name, description)
 
-            if (!viewModel.noteName.value.equals("")) {
+            if (name != "") {
                 viewModel.addNoteToDB()
                 startNotesFragment()
             }
@@ -121,6 +136,8 @@ class NewNoteFragment : Fragment() {
 
     }
 
+
+
     private fun startNotesFragment() {
         parentFragmentManager
             .beginTransaction()
@@ -128,9 +145,29 @@ class NewNoteFragment : Fragment() {
             .commit()
     }
 
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+
+    private val onStartDateSetClickListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        viewModel.onDateStartPicked(year, month, dayOfMonth)
+    }
+
+    private val onFinishDateSetClickListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+        viewModel.onDateFinishPicked(year, month, dayOfMonth)
+    }
+
+    private val onStartTimeSetClickListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+        viewModel.onTimeStartPicked(hour, minute)
+    }
+
+    private val onFinishTimeSetClickListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+        viewModel.onTimeFinishPicked(hour, minute)
     }
 
 }

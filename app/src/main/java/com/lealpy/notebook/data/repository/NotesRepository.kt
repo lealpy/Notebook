@@ -16,7 +16,7 @@ class NotesRepository {
             .findFirst()
     }
 
-    fun getLastID () : Long? {
+    fun getNewID () : Long? {
         val currentIdNumber: Number? = realm.where(Note::class.java).max("id")
         return if (currentIdNumber == null) {
             1
