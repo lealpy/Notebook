@@ -50,8 +50,6 @@ class NewNoteFragment : Fragment() {
     }
 
     private fun initObservers() {
-
-
         viewModel.dateStringStart.observe(viewLifecycleOwner) {
             binding.dateStart.text = it
         }
@@ -115,11 +113,9 @@ class NewNoteFragment : Fragment() {
                 ).show()
             }
         }
-        
     }
 
     private fun initViews() {
-
         binding.dateStart.setOnClickListener {
             viewModel.onDateStartPickerClicked()
         }
@@ -147,10 +143,7 @@ class NewNoteFragment : Fragment() {
             }
             else Toast.makeText(activity, "Введите название события", Toast.LENGTH_SHORT).show() ////////////////////////// Не работает тост
         }
-
     }
-
-
 
     private fun startNotesFragment() {
         parentFragmentManager
@@ -158,8 +151,6 @@ class NewNoteFragment : Fragment() {
             .replace(R.id.nav_host_fragment_activity_main, NotesFragment.newInstance())
             .commit()
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
