@@ -23,26 +23,25 @@ class NotesRepository {
     }
 
     fun addNoteToDB(note : Note) {
-            realm.beginTransaction()
-            realm.copyToRealmOrUpdate(note)
-            realm.commitTransaction()
+        realm.beginTransaction()
+        realm.copyToRealmOrUpdate(note)
+        realm.commitTransaction()
     }
 
     fun changeNoteInDB(note : Note) {
-            realm.beginTransaction()
-            realm.copyToRealmOrUpdate(note)
-            realm.commitTransaction()
+        realm.beginTransaction()
+        realm.copyToRealmOrUpdate(note)
+        realm.commitTransaction()
     }
 
     fun deleteNoteFromDB(id: Long?) {
-            realm.beginTransaction()
-            realm
-                .where(Note::class.java)
-                .equalTo("id", id)
-                .findFirst()
-                ?.deleteFromRealm()
-            realm.commitTransaction()
+        realm.beginTransaction()
+        realm
+            .where(Note::class.java)
+            .equalTo("id", id)
+            .findFirst()
+            ?.deleteFromRealm()
+        realm.commitTransaction()
     }
 
 }
-

@@ -17,12 +17,17 @@ import com.lealpy.notebook.MainActivity
 import com.lealpy.notebook.databinding.FragmentCalendarBinding
 import java.text.SimpleDateFormat
 import java.util.*
+import android.R
+import android.util.Log
+import com.applandeo.materialcalendarview.CalendarView
+import com.applandeo.materialcalendarview.EventDay
+
 
 class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var calendarViewModel: CalendarViewModel
-    private var _binding: FragmentCalendarBinding? = null
 
+    private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
     private val calendar = Calendar.getInstance()
@@ -30,39 +35,34 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
 
-        calendarViewModel =
-            ViewModelProvider(this).get(CalendarViewModel::class.java)
+        calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
 
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 
 
-     //   DatePickerDialog(this, this, initialYear, initialMonth, initialDay).show()
-    //    TimePickerDialog
-
-
-
-
+        //binding.calendarView.setEvents(viewModel.events) // LD
 
         return root
     }
-
-  //  override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-      //  initialDay = dayOfMonth
-      //  initialMonth = month
-      //  initialYear = year
-//    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+    }
+
+/*
+    //Удалить?
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -70,15 +70,9 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
         return DatePickerDialog(requireActivity(),this, year, month, day)
     }
-
-    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        calendar.set(Calendar.YEAR, year)
-        calendar.set(Calendar.MONTH, month)
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-        val selectedDate = SimpleDateFormat("dd-MM-yyyy").format(calendar.time)
-
-        val selectedDataBundle = Bundle()
-
-    }
+    */
 }
+
+
+
+

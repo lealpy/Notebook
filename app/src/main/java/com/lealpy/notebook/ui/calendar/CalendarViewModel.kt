@@ -1,22 +1,32 @@
 package com.lealpy.notebook.ui.calendar
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.R
 import androidx.lifecycle.ViewModel
+import com.lealpy.notebook.data.repository.NotesRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
-
-    val currentYear = SimpleDateFormat("yyyy").format(Date())
-    val currentMonth = SimpleDateFormat("MM").format(Date())
-    val currentDay = SimpleDateFormat("dd").format(Date())
-    val currentHour = SimpleDateFormat("HH").format(Date())
-    val currentMinute = SimpleDateFormat("mm").format(Date())
 
 }
+
+
+    /*
+    val events = mutableListOf<EventDay>()
+    init  {
+        val notes = notesRepository.getAllNotesFromDB()
+
+        notes?.forEach { note ->
+            val dateStart: Long = note?.dateStart ?: 0
+            val yearStart = SimpleDateFormat("yyyy").format(Date(dateStart)).toInt()
+            val monthStart = SimpleDateFormat("MM").format(Date(dateStart)).toInt() - 1
+            val dayStart = SimpleDateFormat("dd").format(Date(dateStart)).toInt()
+
+            val eventDay = EventDay(GregorianCalendar(yearStart, monthStart, dayStart, 0, 0),
+                R.drawable.ic_notification_overlay)
+            events.add(eventDay)
+        }
+    }
+     */
+

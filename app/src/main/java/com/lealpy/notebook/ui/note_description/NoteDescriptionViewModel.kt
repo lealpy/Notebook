@@ -87,7 +87,6 @@ class NoteDescriptionViewModel : ViewModel() {
         _dateStringFinish.value = getDateString(yearFinish, monthFinish, dayFinish)
         _timeStringStart.value = getTimeString(hourStart, minuteStart)
         _timeStringFinish.value = getTimeString(hourFinish, minuteFinish)
-
     }
 
 
