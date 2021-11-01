@@ -1,6 +1,7 @@
 package com.lealpy.notebook
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -20,13 +21,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Realm.init(this)
-        val configuration = RealmConfiguration.Builder()
-            .name("Notes.db")
-            .deleteRealmIfMigrationNeeded()
-            .schemaVersion(0)
-            .build()
-        Realm.setDefaultConfiguration(configuration)
+
 
         val navView: BottomNavigationView = binding.navView
 

@@ -165,10 +165,13 @@ class NoteDescriptionFragment : Fragment() {
     }
 
     private fun startNotesFragment() {
+        /*
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.nav_host_fragment_activity_main, NotesFragment.newInstance())
             .commit()
+
+         */
     }
 
     override fun onDestroyView() {

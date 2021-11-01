@@ -2,6 +2,8 @@ package com.lealpy.notebook.data.repository
 
 import com.lealpy.notebook.data.models.Note
 import io.realm.Realm
+import io.realm.RealmResults
+import io.realm.kotlin.where
 
 class NotesRepository {
 
@@ -42,6 +44,10 @@ class NotesRepository {
             .findFirst()
             ?.deleteFromRealm()
         realm.commitTransaction()
+    }
+
+    fun getAllNotesFromDB(): RealmResults<Note>? {
+        return realm.where<Note>().findAllAsync()
     }
 
 }

@@ -137,6 +137,7 @@ class NewNoteFragment : Fragment() {
             val description = binding.noteDescription.text.toString()
             viewModel.onAddNoteClicked(name, description)
 
+
             if (name != "") {
                 viewModel.addNoteToDB()
                 startNotesFragment()
@@ -148,7 +149,8 @@ class NewNoteFragment : Fragment() {
     private fun startNotesFragment() {
         parentFragmentManager
             .beginTransaction()
-            .replace(R.id.nav_host_fragment_activity_main, NotesFragment.newInstance())
+            .add(R.id.nav_host_fragment_activity_main,
+                NotesFragment.newInstance(1637625600000 ?: 0))
             .commit()
     }
 

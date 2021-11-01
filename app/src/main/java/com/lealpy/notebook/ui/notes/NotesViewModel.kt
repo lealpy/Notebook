@@ -16,13 +16,21 @@ class NotesViewModel : ViewModel() {
 
     private var realm = Realm.getDefaultInstance()
 
+    private var date : Long? = null
+
+    private val _dateString = MutableLiveData <String> (
+        SimpleDateFormat("dd.MM.yyyy").format(Date())
+            )
+    val dateString : LiveData <String> = _dateString
+
     init {
         val notesDB : RealmResults<Note> = realm.where<Note>(Note::class.java).findAll()
         _notesLD.value = realm.copyFromRealm(notesDB)
     }
 
-    fun getCurrentDate() : String {
-        return SimpleDateFormat("dd.MM.yyyy").format(Date())
+    fun onGotDate(date: Long) {
+        this.date = date
+        _dateString.value = SimpleDateFormat("dd.MM.yyyy").format(Date(date))
     }
 
 }

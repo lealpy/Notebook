@@ -60,6 +60,9 @@ class NewNoteViewModel : ViewModel() {
     private val _timeFinishPickerData = MutableLiveData<TimePickerData?> (null)
     val timeFinishPickerData : LiveData<TimePickerData?> = _timeFinishPickerData
 
+    private val _startNotesFragment = MutableLiveData<Long> (0)
+    val startNotesFragment : LiveData <Long> = _startNotesFragment
+
 
 
     private fun getTimestamp(year: Int, month: Int, day: Int, hour: Int, minute: Int) : Long {
@@ -178,6 +181,14 @@ class NewNoteViewModel : ViewModel() {
     fun onAddNoteClicked(name: String, description: String) {
         noteName = name
         noteDescription = description
+
+        /*
+        if (noteName != "") {
+            addNoteToDB()
+            _startNotesFragment.value =
+                getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
+        }
+        */
     }
 
     fun addNoteToDB() {

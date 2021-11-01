@@ -41,12 +41,12 @@ class NotesFragment : Fragment() {
         _binding = FragmentNotesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        arguments?.getLong(NOTES_ID)?.let { date ->
+            viewModel.onGotDate(date)
+        }
+
         initObservers()
-
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.recyclerView.adapter = notesAdapter
-
-        binding.date.text = viewModel.getCurrentDate()
+        initViews()
 
         return root
     }
@@ -60,12 +60,27 @@ class NotesFragment : Fragment() {
         viewModel.notesLD.observe(viewLifecycleOwner) { notes ->
             notesAdapter.submitList(notes)
         }
+
+        viewModel.dateString.observe(viewLifecycleOwner) { dateString ->
+            binding.date.text = dateString
+        }
+    }
+
+    private fun initViews() {
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = notesAdapter
     }
 
     companion object {
         private const val NOTES_ID = "NOTES_ID"
 
         @JvmStatic
-        fun newInstance() = NotesFragment()
+        fun newInstance(date: Long): NotesFragment {
+            return NotesFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(NOTES_ID, date)
+                }
+            }
+        }
     }
 }
