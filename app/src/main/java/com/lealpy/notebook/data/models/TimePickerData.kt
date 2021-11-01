@@ -1,4 +1,4 @@
-package com.lealpy.notebook.ui.new_note
+package com.lealpy.notebook.data.models
 
 data class TimePickerData(
     val hour : Int,
