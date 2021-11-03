@@ -1,24 +1,23 @@
 <resources>
     <string name="app_name">Ежедневник</string>
 
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_calendar">Календарь</string>
+    <string name="title_notes">События</string>
+    <string name="title_new_note">Новое событие</string>
 
-    <string name="title_calendar">Calendar</string>
-    <string name="title_notes">Notes</string>
-    <string name="title_new_note">New note</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="new_note">Новое событие</string>
+    <string name="note">Событие</string>
+    <string name="notes_list">Список событий</string>
     <string name="start">Начало:</string>
     <string name="finish">Окончание:</string>
-    <string name="note">Событие</string>
-    <string name="description">Описание</string>
+    <string name="note_name">Название события</string>
+    <string name="note_description">Описание события</string>
     <string name="add_note">Добавить событие</string>
     <string name="change_note">Изменить событие</string>
     <string name="delete_note">Удалить событие</string>
-    <string name="notes_list">Список событий</string>
+
+    <string name="enter_note_name">Введите название события</string>
+
 
     <string name="material_calendar_monday">Пн</string>
     <string name="material_calendar_tuesday">Вт</string>
@@ -46,7 +45,5 @@
     <string name="material_calendar_today_button">Сегодня</string>
     <string name="material_calendar_positive_button">ОК</string>
     <string name="material_calendar_negative_button">Отмена</string>
-
-
 
 </resources>

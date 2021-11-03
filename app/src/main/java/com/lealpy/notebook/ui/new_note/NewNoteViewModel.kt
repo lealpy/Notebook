@@ -1,7 +1,6 @@
 package com.lealpy.notebook.ui.new_note
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -189,8 +188,6 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
             addNoteToDB()
             _startNotesFragment.value =
                 getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
-            Log.d("MyLog", "NewNote ${_startNotesFragment.value}")
-
         }
         else Toast.makeText(getApplication(), "Введите название события", Toast.LENGTH_SHORT).show()
     }
