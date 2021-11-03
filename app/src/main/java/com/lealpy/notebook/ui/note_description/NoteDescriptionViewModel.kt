@@ -1,8 +1,10 @@
 package com.lealpy.notebook.ui.note_description
 
+import android.app.Application
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.lealpy.notebook.data.models.DatePickerData
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.data.models.TimePickerData
@@ -10,7 +12,7 @@ import com.lealpy.notebook.data.repository.NotesRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteDescriptionViewModel : ViewModel() {
+class NoteDescriptionViewModel(application: Application) : AndroidViewModel(application) {
 
     private val notesRepository = NotesRepository()
 
@@ -60,6 +62,9 @@ class NoteDescriptionViewModel : ViewModel() {
 
     private val _timeFinishPickerData = MutableLiveData<TimePickerData?> (null)
     val timeFinishPickerData : LiveData<TimePickerData?> = _timeFinishPickerData
+
+    private val _startNotesFragment = MutableLiveData<Long> ()
+    val startNotesFragment : LiveData <Long> = _startNotesFragment
 
 
 
@@ -206,9 +211,17 @@ class NoteDescriptionViewModel : ViewModel() {
     fun onChangeNoteClicked(name: String, description: String) {
         _noteName.value = name
         _noteDescription.value = description
+
+        if (noteName.value != "") {
+            changeNoteInDB()
+            Toast.makeText(getApplication(), "Событие изменено", Toast.LENGTH_SHORT).show()
+            _startNotesFragment.value =
+                getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
+        }
+        else Toast.makeText(getApplication(), "Введите название события", Toast.LENGTH_SHORT).show()
     }
 
-    fun changeNoteInDB() {
+    private fun changeNoteInDB() {
         val note = Note(
             noteId,
             getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart),
@@ -219,8 +232,11 @@ class NoteDescriptionViewModel : ViewModel() {
         notesRepository.changeNoteInDB(note)
     }
 
-    fun deleteNoteFromDB() {
+    fun onDeleteNoteClicked() {
         notesRepository.deleteNoteFromDB(note?.id)
+        _startNotesFragment.value =
+            getTimestamp(yearStart, monthStart, dayStart, 0, 0)
+        Toast.makeText(getApplication(), "Событие удалено", Toast.LENGTH_SHORT).show()
     }
 
 }

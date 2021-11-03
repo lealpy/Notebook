@@ -9,7 +9,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Log.d("MyLog", "App Realm")
         Realm.init(this)
         val configuration = RealmConfiguration.Builder()
             .name("Notes.db")

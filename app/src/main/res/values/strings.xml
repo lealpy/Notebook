@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Notebook</string>
+    <string name="app_name">Ежедневник</string>
 
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -18,6 +18,7 @@
     <string name="add_note">Добавить событие</string>
     <string name="change_note">Изменить событие</string>
     <string name="delete_note">Удалить событие</string>
+    <string name="notes_list">Список событий</string>
 
     <string name="material_calendar_monday">Пн</string>
     <string name="material_calendar_tuesday">Вт</string>
@@ -42,10 +43,10 @@
         <item>Декабрь</item>
     </array>
 
-    <string name="material_calendar_today_button">Today</string>
-    <string name="material_calendar_positive_button">OK</string>
-    <string name="material_calendar_negative_button">Cancel</string>
-    <string name="notes_for">События на</string>
+    <string name="material_calendar_today_button">Сегодня</string>
+    <string name="material_calendar_positive_button">ОК</string>
+    <string name="material_calendar_negative_button">Отмена</string>
+
 
 
 </resources>

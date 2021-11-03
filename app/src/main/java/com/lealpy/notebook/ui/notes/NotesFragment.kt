@@ -11,6 +11,7 @@ import com.lealpy.notebook.R
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.databinding.FragmentNotesBinding
 import com.lealpy.notebook.ui.note_description.NoteDescriptionFragment
+import com.vivekkaushik.datepicker.OnDateSelectedListener
 
 class NotesFragment : Fragment() {
 
@@ -23,7 +24,7 @@ class NotesFragment : Fragment() {
             override fun onItemClick(note: Note) {
                 parentFragmentManager
                     .beginTransaction()
-                    .add(R.id.nav_host_fragment_activity_main,
+                    .replace(R.id.nav_host_fragment_activity_main,
                         NoteDescriptionFragment.newInstance(note.id ?: -1))
                     .commit()
             }
@@ -36,14 +37,16 @@ class NotesFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        viewModel = ViewModelProvider(this).get(NotesViewModel::class.java)
-
         _binding = FragmentNotesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        arguments?.getLong(NOTES_ID)?.let { date ->
+        viewModel = ViewModelProvider(this).get(NotesViewModel::class.java)
+
+        arguments?.getLong(NOTES_CODE)?.let { date ->
             viewModel.onGotDate(date)
         }
+
+        viewModel.setNotes() //--------------------------- Мне не нравится
 
         initObservers()
         initViews()
@@ -69,16 +72,33 @@ class NotesFragment : Fragment() {
     private fun initViews() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = notesAdapter
+
+        binding.datePickerTimeline.setInitialDate(2021, 10, 1)
+        binding.datePickerTimeline.setOnDateSelectedListener(object : OnDateSelectedListener {
+            override fun onDateSelected(year: Int, month: Int, day: Int, dayOfWeek: Int) {
+                //binding.date.text = "$day.$month.$year"
+                binding.datePickerTimeline.setInitialDate(year, month, day)
+            }
+            override fun onDisabledDateSelected(
+                year: Int,
+                month: Int,
+                day: Int,
+                dayOfWeek: Int,
+                isDisabled: Boolean,
+            ) {
+                // Do Something
+            }
+        })
     }
 
     companion object {
-        private const val NOTES_ID = "NOTES_ID"
+        private const val NOTES_CODE = "NOTES_CODE"
 
         @JvmStatic
         fun newInstance(date: Long): NotesFragment {
             return NotesFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(NOTES_ID, date)
+                    putLong(NOTES_CODE, date)
                 }
             }
         }

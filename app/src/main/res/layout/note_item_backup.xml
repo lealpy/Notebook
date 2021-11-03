@@ -28,10 +28,18 @@
             >
 
             <TextView
+                android:id="@+id/timeRange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="10:00-11:00"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
                 android:id="@+id/noteName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="noteName"
+                tools:text="noteName"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -39,7 +47,7 @@
                 android:id="@+id/noteDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="noteDescription"
+                tools:text="noteDescription"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -47,7 +55,7 @@
                 android:id="@+id/noteDateStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="noteDateStart"
+                tools:text="noteDateStart"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -55,7 +63,7 @@
                 android:id="@+id/noteTimeStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="noteTimeStart"
+                tools:text="noteTimeStart"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -63,7 +71,7 @@
                 android:id="@+id/noteDateFinish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="noteDateFinish"
+                tools:text="noteDateFinish"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -71,7 +79,7 @@
                 android:id="@+id/noteTimeFinish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="noteTimeFinish"
+                tools:text="noteTimeFinish"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -79,7 +87,7 @@
                 android:id="@+id/noteID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="noteID"
+                tools:text="noteID"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 

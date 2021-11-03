@@ -3,6 +3,7 @@ package com.lealpy.notebook.ui.new_note
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -113,6 +114,10 @@ class NewNoteFragment : Fragment() {
                 ).show()
             }
         }
+
+        viewModel.startNotesFragment.observe(viewLifecycleOwner) { date ->
+            startNotesFragment(date)
+        }
     }
 
     private fun initViews() {
@@ -136,21 +141,14 @@ class NewNoteFragment : Fragment() {
             val name = binding.noteName.text.toString()
             val description = binding.noteDescription.text.toString()
             viewModel.onAddNoteClicked(name, description)
-
-
-            if (name != "") {
-                viewModel.addNoteToDB()
-                startNotesFragment()
-            }
-            else Toast.makeText(activity, "Введите название события", Toast.LENGTH_SHORT).show() ////////////////////////// Не работает тост
         }
     }
 
-    private fun startNotesFragment() {
+    private fun startNotesFragment(date : Long) {
         parentFragmentManager
             .beginTransaction()
-            .add(R.id.nav_host_fragment_activity_main,
-                NotesFragment.newInstance(1637625600000 ?: 0))
+            .replace(R.id.nav_host_fragment_activity_main,
+                NotesFragment.newInstance(date ?: 0))
             .commit()
     }
 

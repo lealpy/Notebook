@@ -19,71 +19,49 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:gravity="start"
-            >
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/timeRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="10:00-11:00"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
                 android:id="@+id/noteName"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="noteName"
+                tools:text="Помыть машину в автомойке"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/noteDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="noteDescription"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/noteDateStart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="noteDateStart"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@+id/timeRange"
+                app:layout_constraintEnd_toStartOf="@id/noteTimeStart"
+                app:layout_constraintHorizontal_bias="0"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
                 android:id="@+id/noteTimeStart"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="noteTimeStart"
+                tools:text="10:30"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <TextView
-                android:id="@+id/noteDateFinish"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="noteDateFinish"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/noteTimeFinish"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="noteTimeFinish"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/noteID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="noteID"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 

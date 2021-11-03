@@ -24,19 +24,15 @@ class CalendarViewModel : ViewModel() {
             val yearStart = SimpleDateFormat("yyyy").format(Date(dateStart)).toInt()
             val monthStart = SimpleDateFormat("MM").format(Date(dateStart)).toInt() - 1
             val dayStart = SimpleDateFormat("dd").format(Date(dateStart)).toInt()
+            val hourStart = SimpleDateFormat("HH").format(Date(dateStart)).toInt()
+            val minuteStart = SimpleDateFormat("mm").format(Date(dateStart)).toInt()
             val eventDay = EventDay(
-                GregorianCalendar(yearStart, monthStart, dayStart, 0, 0),
+                GregorianCalendar(yearStart, monthStart, dayStart, hourStart, minuteStart),
                 R.drawable.ic_notification_overlay
             )
             _events.value?.add(eventDay)
         }
     }
-
-    fun onClickedDate(time: Date) {
-
-    }
-
-
 }
 
 

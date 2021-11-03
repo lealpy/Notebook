@@ -52,10 +52,9 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
     private fun initViews() {
         binding.calendarView.setOnDayClickListener {eventDay ->
             val date = eventDay.calendar.time.time
-            Log.d("MyLog", "$date")
             parentFragmentManager
                 .beginTransaction()
-                .add(R.id.nav_host_fragment_activity_main,
+                .replace(R.id.nav_host_fragment_activity_main,
                     NotesFragment.newInstance(date ?: 0))
                 .commit()
         }
@@ -72,16 +71,6 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
     }
 
-/*
-    //Удалить?
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        return DatePickerDialog(requireActivity(),this, year, month, day)
-    }
-    */
 }
 
 

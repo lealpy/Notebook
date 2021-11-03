@@ -1,8 +1,11 @@
 package com.lealpy.notebook.ui.new_note
 
+import android.app.Application
+import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.lealpy.notebook.data.models.DatePickerData
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.data.models.TimePickerData
@@ -10,7 +13,7 @@ import com.lealpy.notebook.data.repository.NotesRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NewNoteViewModel : ViewModel() {
+class NewNoteViewModel(application: Application) : AndroidViewModel(application) {
 
     private val notesRepository = NotesRepository()
 
@@ -60,14 +63,14 @@ class NewNoteViewModel : ViewModel() {
     private val _timeFinishPickerData = MutableLiveData<TimePickerData?> (null)
     val timeFinishPickerData : LiveData<TimePickerData?> = _timeFinishPickerData
 
-    private val _startNotesFragment = MutableLiveData<Long> (0)
+    private val _startNotesFragment = MutableLiveData<Long> ()
     val startNotesFragment : LiveData <Long> = _startNotesFragment
 
 
 
     private fun getTimestamp(year: Int, month: Int, day: Int, hour: Int, minute: Int) : Long {
-        val calendar: Calendar = GregorianCalendar(year, month, day, hour, minute)
-        return calendar.timeInMillis
+        return GregorianCalendar(year, month, day, hour, minute).timeInMillis
+
     }
 
 
@@ -182,16 +185,17 @@ class NewNoteViewModel : ViewModel() {
         noteName = name
         noteDescription = description
 
-        /*
         if (noteName != "") {
             addNoteToDB()
             _startNotesFragment.value =
                 getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
+            Log.d("MyLog", "NewNote ${_startNotesFragment.value}")
+
         }
-        */
+        else Toast.makeText(getApplication(), "Введите название события", Toast.LENGTH_SHORT).show()
     }
 
-    fun addNoteToDB() {
+    private fun addNoteToDB() {
         val note = Note(
             notesRepository.getNewID(),
             getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart),
@@ -200,6 +204,8 @@ class NewNoteViewModel : ViewModel() {
             noteDescription)
 
         notesRepository.addNoteToDB(note)
+
+        Toast.makeText(getApplication(), "Событие добавлено", Toast.LENGTH_SHORT).show()
     }
 
 }

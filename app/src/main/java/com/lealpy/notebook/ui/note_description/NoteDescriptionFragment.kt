@@ -125,6 +125,10 @@ class NoteDescriptionFragment : Fragment() {
                 ).show()
             }
         }
+
+        viewModel.startNotesFragment.observe(viewLifecycleOwner) { date ->
+            startNotesFragment(date)
+        }
     }
 
     private fun initViews() {
@@ -150,28 +154,19 @@ class NoteDescriptionFragment : Fragment() {
             val name = binding.noteName.text.toString()
             val description = binding.noteDescription.text.toString()
             viewModel.onChangeNoteClicked(name, description)
-
-            if (name != "") {
-                viewModel.changeNoteInDB()
-                startNotesFragment()
-            }
-            else Toast.makeText(activity, "Введите название события", Toast.LENGTH_SHORT).show() ////////////////////////// Не работает тост
         }
 
         binding.deleteTaskButton.setOnClickListener {
-            viewModel.deleteNoteFromDB()
-            startNotesFragment()
+            viewModel.onDeleteNoteClicked()
         }
     }
 
-    private fun startNotesFragment() {
-        /*
+    private fun startNotesFragment(date : Long) {
         parentFragmentManager
             .beginTransaction()
-            .replace(R.id.nav_host_fragment_activity_main, NotesFragment.newInstance())
+            .replace(R.id.nav_host_fragment_activity_main,
+                NotesFragment.newInstance(date ?: 0))
             .commit()
-
-         */
     }
 
     override fun onDestroyView() {
