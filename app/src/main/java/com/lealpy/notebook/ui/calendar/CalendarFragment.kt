@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.lealpy.notebook.R
 import com.lealpy.notebook.databinding.FragmentCalendarBinding
+import com.lealpy.notebook.ui.new_note.NewNoteFragment
 import com.lealpy.notebook.ui.note_description.NoteDescriptionFragment
 import com.lealpy.notebook.ui.notes.NotesFragment
 import java.sql.Timestamp
@@ -47,6 +48,14 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         viewModel.events.observe(viewLifecycleOwner) {events ->
             binding.calendarView.setEvents(events)
         }
+
+        viewModel.startNewNote.observe(viewLifecycleOwner) {date ->
+            parentFragmentManager
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main,
+                    NewNoteFragment.newInstance(date ?: 0))
+                .commit()
+        }
     }
 
     private fun initViews() {
@@ -57,6 +66,10 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
                 .replace(R.id.nav_host_fragment_activity_main,
                     NotesFragment.newInstance(date ?: 0))
                 .commit()
+        }
+
+        binding.addNoteBtn.setOnClickListener {
+            viewModel.onAddNoteBtnClicked()
         }
     }
 

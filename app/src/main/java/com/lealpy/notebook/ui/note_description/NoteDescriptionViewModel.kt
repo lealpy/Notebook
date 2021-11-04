@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.lealpy.notebook.R
 import com.lealpy.notebook.data.models.DatePickerData
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.data.models.TimePickerData
@@ -214,11 +215,16 @@ class NoteDescriptionViewModel(application: Application) : AndroidViewModel(appl
 
         if (noteName.value != "") {
             changeNoteInDB()
-            Toast.makeText(getApplication(), "Событие изменено", Toast.LENGTH_SHORT).show()
             _startNotesFragment.value =
                 getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
+
+            val toastText = getApplication<Application>().resources.getString(R.string.note_changed)
+            Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT).show()
         }
-        else Toast.makeText(getApplication(), "Введите название события", Toast.LENGTH_SHORT).show()
+        else {
+            val toastText = getApplication<Application>().resources.getString(R.string.enter_note_name)
+            Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun changeNoteInDB() {
@@ -233,10 +239,13 @@ class NoteDescriptionViewModel(application: Application) : AndroidViewModel(appl
     }
 
     fun onDeleteNoteClicked() {
+
         notesRepository.deleteNoteFromDB(note?.id)
         _startNotesFragment.value =
             getTimestamp(yearStart, monthStart, dayStart, 0, 0)
-        Toast.makeText(getApplication(), "Событие удалено", Toast.LENGTH_SHORT).show()
+
+        val toastText = getApplication<Application>().resources.getString(R.string.note_deleted)
+        Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT).show()
     }
 
 }

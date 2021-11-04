@@ -1,6 +1,7 @@
 package com.lealpy.notebook
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -17,4 +18,5 @@ class App : Application() {
             .build()
         Realm.setDefaultConfiguration(configuration)
     }
+
 }

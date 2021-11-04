@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.lealpy.notebook.App
 import com.lealpy.notebook.R
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.databinding.FragmentNotesBinding
+import com.lealpy.notebook.ui.new_note.NewNoteFragment
 import com.lealpy.notebook.ui.note_description.NoteDescriptionFragment
 import com.vivekkaushik.datepicker.OnDateSelectedListener
 
@@ -46,7 +48,7 @@ class NotesFragment : Fragment() {
             viewModel.onGotDate(date)
         }
 
-        viewModel.setNotes() //--------------------------- Мне не нравится
+        viewModel.setNotes()
 
         initObservers()
         initViews()
@@ -67,11 +69,23 @@ class NotesFragment : Fragment() {
         viewModel.dateString.observe(viewLifecycleOwner) { dateString ->
             binding.date.text = dateString
         }
+
+        viewModel.startNewNote.observe(viewLifecycleOwner) { date ->
+            parentFragmentManager
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main,
+                    NewNoteFragment.newInstance(date ?: 0))
+                .commit()
+        }
     }
 
     private fun initViews() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = notesAdapter
+
+        binding.addNoteBtn.setOnClickListener {
+            viewModel.onAddNoteBntClicked()
+        }
 
         binding.datePickerTimeline.setInitialDate(2021, 10, 1)
         binding.datePickerTimeline.setOnDateSelectedListener(object : OnDateSelectedListener {

@@ -1,13 +1,18 @@
 package com.lealpy.notebook.ui.notes
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lealpy.notebook.R
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.databinding.NoteItemBinding
 import java.text.SimpleDateFormat
@@ -15,7 +20,7 @@ import java.util.*
 
 
 class NotesAdapter(
-    private val onItemClickListener: OnItemClickListener
+    private val onItemClickListener: OnItemClickListener,
 ) : ListAdapter<Note, NotesAdapter.NoteHolder>(DiffCallback()) {
 
     inner class NoteHolder(
@@ -35,18 +40,21 @@ class NotesAdapter(
         }
 
         fun bind (note : Note, previousNote : Note?) {
-            binding.noteName.text = note.name
-            //binding.noteDateStart.text = getDateStringByTimestamp(note.dateStart)
-            binding.noteTimeStart.text = getTimeStringByTimestamp(note.dateStart)
+            binding.noteName.text = "${getTimeStringByTimestamp(note.dateStart)} - ${note.name}"
             binding.timeRange.text = getTimeRange(note.dateStart?.plus(getGMT()))
+
+            val max = 200
+            val min = 100
+            val randomRed = Random().nextInt(max-min)+min
+            val randomGreen = Random().nextInt(max-min)+min
+            val randomBlue = Random().nextInt(max-min)+min
+            binding.cardView.setCardBackgroundColor(Color.argb(255, randomRed, randomGreen, randomBlue))
 
             binding.timeRange.visibility =
                 if(previousNote != null &&
                     getTimeRange(note.dateStart) == getTimeRange(previousNote.dateStart)
                 ) { View.INVISIBLE }
                 else { View.VISIBLE }
-
-
         }
 
         private fun getGMT() : Long {
@@ -85,7 +93,6 @@ class NotesAdapter(
             }
             else ""
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {

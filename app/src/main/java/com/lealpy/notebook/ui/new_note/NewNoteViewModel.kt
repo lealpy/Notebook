@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.lealpy.notebook.R
 import com.lealpy.notebook.data.models.DatePickerData
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.data.models.TimePickerData
@@ -188,8 +189,14 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
             addNoteToDB()
             _startNotesFragment.value =
                 getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
+
+            val toastText = getApplication<Application>().resources.getString(R.string.note_created)
+            Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT).show()
         }
-        else Toast.makeText(getApplication(), "Введите название события", Toast.LENGTH_SHORT).show()
+        else {
+            val toastText = getApplication<Application>().resources.getString(R.string.enter_note_name)
+            Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun addNoteToDB() {
@@ -201,8 +208,17 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
             noteDescription)
 
         notesRepository.addNoteToDB(note)
+    }
 
-        Toast.makeText(getApplication(), "Событие добавлено", Toast.LENGTH_SHORT).show()
+    fun onGotDate(date: Long) {
+        _dateStringStart.value = SimpleDateFormat("dd.MM.yyyy")?.format(Date(date))
+        _timeStringStart.value = SimpleDateFormat("HH:mm")?.format(Date(date))
+        _dateStringFinish.value = SimpleDateFormat("dd.MM.yyyy")?.format(Date(date + 3600000))
+        _timeStringFinish.value = SimpleDateFormat("HH:mm")?.format(Date(date + 3600000))
+    }
+
+    companion object {
+        const val MILLIS_IN_HOUR = 3600000
     }
 
 }

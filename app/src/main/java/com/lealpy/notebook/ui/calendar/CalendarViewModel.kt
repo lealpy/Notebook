@@ -12,10 +12,14 @@ import java.util.*
 
 class CalendarViewModel : ViewModel() {
 
+
     private val notesRepository = NotesRepository()
 
     private val _events = MutableLiveData<MutableList<EventDay>>(mutableListOf<EventDay>())
     val events : LiveData<MutableList<EventDay>> = _events
+
+    private val _startAddNote = MutableLiveData <Long> ()
+    val startNewNote : LiveData <Long> = _startAddNote
 
     init {
         val notes = notesRepository.getAllNotesFromDB()
@@ -32,6 +36,10 @@ class CalendarViewModel : ViewModel() {
             )
             _events.value?.add(eventDay)
         }
+    }
+
+    fun onAddNoteBtnClicked() {
+        _startAddNote.value = Date().time
     }
 }
 

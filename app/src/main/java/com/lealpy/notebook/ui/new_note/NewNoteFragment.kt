@@ -38,10 +38,14 @@ class NewNoteFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        viewModel = ViewModelProvider(this).get(NewNoteViewModel::class.java)
-
         _binding = FragmentNewNoteBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        viewModel = ViewModelProvider(this).get(NewNoteViewModel::class.java)
+
+        arguments?.getLong(NEW_NOTE_CODE)?.let { date ->
+            viewModel.onGotDate(date)
+        }
 
         initObservers()
         initViews()
@@ -154,6 +158,19 @@ class NewNoteFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val NEW_NOTE_CODE = "NEW_NOTE_CODE"
+
+        @JvmStatic
+        fun newInstance(date: Long): NewNoteFragment {
+            return NewNoteFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(NEW_NOTE_CODE, date)
+                }
+            }
+        }
     }
 
 }

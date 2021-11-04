@@ -17,9 +17,4 @@
         android:label="@string/title_notes"
         tools:layout="@layout/fragment_notes" />
 
-    <fragment
-        android:id="@+id/navigation_new_note"
-        android:name="com.lealpy.notebook.ui.new_note.NewNoteFragment"
-        android:label="@string/title_new_note"
-        tools:layout="@layout/fragment_new_note" />
 </navigation>

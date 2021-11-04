@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.lealpy.notebook.R
 import com.lealpy.notebook.databinding.FragmentNoteDescriptionBinding
@@ -43,7 +42,7 @@ class NoteDescriptionFragment : Fragment() {
         _binding = FragmentNoteDescriptionBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        arguments?.getLong(NOTE_DESCRIPTION_ID)?.let { id ->
+        arguments?.getLong(NOTE_DESCRIPTION_CODE)?.let { id ->
             viewModel.onGotId(id)
         }
 
@@ -175,13 +174,13 @@ class NoteDescriptionFragment : Fragment() {
     }
 
     companion object {
-        private const val NOTE_DESCRIPTION_ID = "NOTE_DESCRIPTION_ID"
+        private const val NOTE_DESCRIPTION_CODE = "NOTE_DESCRIPTION_CODE"
 
         @JvmStatic
         fun newInstance(id: Long): NoteDescriptionFragment {
             return NoteDescriptionFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(NOTE_DESCRIPTION_ID, id)
+                    putLong(NOTE_DESCRIPTION_CODE, id)
                 }
             }
         }

@@ -17,7 +17,9 @@
     <string name="delete_note">Удалить событие</string>
 
     <string name="enter_note_name">Введите название события</string>
-
+    <string name="note_deleted">Событие удалено</string>
+    <string name="note_changed">Событие изменено</string>
+    <string name="note_created">Событие создано</string>
 
     <string name="material_calendar_monday">Пн</string>
     <string name="material_calendar_tuesday">Вт</string>
