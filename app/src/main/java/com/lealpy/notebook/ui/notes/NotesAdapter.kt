@@ -1,23 +1,17 @@
 package com.lealpy.notebook.ui.notes
 
 import android.annotation.SuppressLint
-import android.app.Application
-import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lealpy.notebook.R
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.databinding.NoteItemBinding
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class NotesAdapter(
     private val onItemClickListener: OnItemClickListener,
@@ -129,13 +123,8 @@ class NotesAdapter(
         return SimpleDateFormat("HH:mm").format(timestamp?.let { Date(it) })
     }
 
-    fun getDateStringByTimestamp(timestamp : Long?) : String {
-        return SimpleDateFormat("dd.MM.yyyy").format(timestamp?.let { Date(it) })
-    }
-
     companion object {
         const val MILLIS_IN_DAY = 86400000
         const val MILLIS_IN_HOUR = 3600000
     }
-
 }

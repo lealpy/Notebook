@@ -148,14 +148,13 @@ class NoteDescriptionFragment : Fragment() {
             viewModel.onTimeFinishPickerClicked()
         }
 
-
-        binding.changeTaskButton.setOnClickListener {
+        binding.changeNoteButton.setOnClickListener {
             val name = binding.noteName.text.toString()
             val description = binding.noteDescription.text.toString()
             viewModel.onChangeNoteClicked(name, description)
         }
 
-        binding.deleteTaskButton.setOnClickListener {
+        binding.deleteNoteButton.setOnClickListener {
             viewModel.onDeleteNoteClicked()
         }
     }
@@ -185,7 +184,6 @@ class NoteDescriptionFragment : Fragment() {
             }
         }
     }
-
 }
 
 

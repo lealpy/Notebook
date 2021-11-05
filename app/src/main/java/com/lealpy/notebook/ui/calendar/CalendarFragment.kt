@@ -2,7 +2,6 @@ package com.lealpy.notebook.ui.calendar
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.lealpy.notebook.R
 import com.lealpy.notebook.databinding.FragmentCalendarBinding
 import com.lealpy.notebook.ui.new_note.NewNoteFragment
-import com.lealpy.notebook.ui.note_description.NoteDescriptionFragment
 import com.lealpy.notebook.ui.notes.NotesFragment
-import java.sql.Timestamp
 import java.util.*
 
 
@@ -83,7 +80,6 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
     }
-
 }
 
 

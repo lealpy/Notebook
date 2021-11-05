@@ -67,8 +67,6 @@ class NoteDescriptionViewModel(application: Application) : AndroidViewModel(appl
     private val _startNotesFragment = MutableLiveData<Long> ()
     val startNotesFragment : LiveData <Long> = _startNotesFragment
 
-
-
     fun onGotId(id: Long) {
         noteId = id
         note = notesRepository.getNoteFromDB(noteId)
@@ -95,13 +93,9 @@ class NoteDescriptionViewModel(application: Application) : AndroidViewModel(appl
         _timeStringFinish.value = getTimeString(hourFinish, minuteFinish)
     }
 
-
     private fun getTimestamp(year: Int, month: Int, day: Int, hour: Int, minute: Int) : Long {
-        val calendar: Calendar = GregorianCalendar(year, month, day, hour, minute)
-        return calendar.timeInMillis
+        return GregorianCalendar(year, month, day, hour, minute).timeInMillis
     }
-
-
 
     private fun getDateString(year : Int, month : Int, day : Int) : String {
         return SimpleDateFormat("dd.MM.yyyy").format(Date(getTimestamp(year, month, day, 0, 0)))
@@ -110,8 +104,6 @@ class NoteDescriptionViewModel(application: Application) : AndroidViewModel(appl
     private fun getTimeString(hour : Int, minute : Int) : String {
         return SimpleDateFormat("HH:mm").format(Date(getTimestamp(1970, 0, 1, hour, minute)))
     }
-
-
 
     private fun refreshDateLD() {
         _dateStringStart.value = getDateString(yearStart, monthStart, dayStart)
@@ -122,8 +114,6 @@ class NoteDescriptionViewModel(application: Application) : AndroidViewModel(appl
         _timeStringStart.value = getTimeString(hourStart, minuteStart)
         _timeStringFinish.value = getTimeString(hourFinish, minuteFinish)
     }
-
-
 
     fun onDateStartPickerClicked() {
         val datePickerData = DatePickerData (yearStart, monthStart, dayStart)
@@ -144,8 +134,6 @@ class NoteDescriptionViewModel(application: Application) : AndroidViewModel(appl
         val timePickerData = TimePickerData (hourFinish, minuteFinish)
         _timeFinishPickerData.value = timePickerData
     }
-
-
 
     fun onDateStartPicked(year: Int, month: Int, dayOfMonth: Int) {
         yearStart = year
@@ -177,8 +165,6 @@ class NoteDescriptionViewModel(application: Application) : AndroidViewModel(appl
         checkSelectedFinishAfterStart()
     }
 
-
-
     private fun checkSelectedStartBeforeFinish() {
         val timestampStart = getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
         val timestampFinish = getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
@@ -206,8 +192,6 @@ class NoteDescriptionViewModel(application: Application) : AndroidViewModel(appl
         refreshDateLD()
         refreshTimeLD()
     }
-
-
 
     fun onChangeNoteClicked(name: String, description: String) {
         _noteName.value = name
@@ -247,5 +231,4 @@ class NoteDescriptionViewModel(application: Application) : AndroidViewModel(appl
         val toastText = getApplication<Application>().resources.getString(R.string.note_deleted)
         Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT).show()
     }
-
 }

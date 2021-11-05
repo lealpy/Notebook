@@ -4,7 +4,6 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
 open class Note (
-
     @PrimaryKey
     var id : Long? = null,
     var dateStart : Long? = null,

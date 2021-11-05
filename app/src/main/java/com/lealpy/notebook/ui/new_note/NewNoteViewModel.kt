@@ -66,14 +66,27 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
     private val _startNotesFragment = MutableLiveData<Long> ()
     val startNotesFragment : LiveData <Long> = _startNotesFragment
 
+    fun onGotDate(date: Long) {
+        yearStart = SimpleDateFormat("yyyy").format(Date(date)).toInt()
+        monthStart = SimpleDateFormat("MM").format(Date(date)).toInt() - 1
+        dayStart = SimpleDateFormat("dd").format(Date(date)).toInt()
+        hourStart = SimpleDateFormat("HH").format(Date(date)).toInt()
+        minuteStart = SimpleDateFormat("mm").format(Date(date)).toInt()
+        yearFinish = yearStart
+        monthFinish = monthStart
+        dayFinish = dayStart
+        hourFinish = hourStart + 1
+        minuteFinish = minuteStart
 
+        _dateStringStart.value = SimpleDateFormat("dd.MM.yyyy")?.format(Date(date))
+        _timeStringStart.value = SimpleDateFormat("HH:mm")?.format(Date(date))
+        _dateStringFinish.value = SimpleDateFormat("dd.MM.yyyy")?.format(Date(date + MILLIS_IN_HOUR))
+        _timeStringFinish.value = SimpleDateFormat("HH:mm")?.format(Date(date + MILLIS_IN_HOUR))
+    }
 
     private fun getTimestamp(year: Int, month: Int, day: Int, hour: Int, minute: Int) : Long {
         return GregorianCalendar(year, month, day, hour, minute).timeInMillis
-
     }
-
-
 
     private fun getDateString(year : Int, month : Int, day : Int) : String {
         return SimpleDateFormat("dd.MM.yyyy").format(Date(getTimestamp(year, month, day, 0, 0)))
@@ -82,8 +95,6 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
     private fun getTimeString(hour : Int, minute : Int) : String {
         return SimpleDateFormat("HH:mm").format(Date(getTimestamp(1970, 0, 1, hour, minute)))
     }
-
-
 
     private fun refreshDateLD() {
         _dateStringStart.value = getDateString(yearStart, monthStart, dayStart)
@@ -94,8 +105,6 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
         _timeStringStart.value = getTimeString(hourStart, minuteStart)
         _timeStringFinish.value = getTimeString(hourFinish, minuteFinish)
     }
-
-
 
     fun onDateStartPickerClicked() {
         val datePickerData = DatePickerData (yearStart, monthStart, dayStart)
@@ -116,8 +125,6 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
         val timePickerData = TimePickerData (hourFinish, minuteFinish)
         _timeFinishPickerData.value = timePickerData
     }
-
-
 
     fun onDateStartPicked(year: Int, month: Int, dayOfMonth: Int) {
         yearStart = year
@@ -149,8 +156,6 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
         checkSelectedFinishAfterStart()
     }
 
-
-
     private fun checkSelectedStartBeforeFinish() {
         val timestampStart = getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
         val timestampFinish = getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
@@ -179,8 +184,6 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
         refreshTimeLD()
     }
 
-
-
     fun onAddNoteClicked(name: String, description: String) {
         noteName = name
         noteDescription = description
@@ -208,13 +211,6 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
             noteDescription)
 
         notesRepository.addNoteToDB(note)
-    }
-
-    fun onGotDate(date: Long) {
-        _dateStringStart.value = SimpleDateFormat("dd.MM.yyyy")?.format(Date(date))
-        _timeStringStart.value = SimpleDateFormat("HH:mm")?.format(Date(date))
-        _dateStringFinish.value = SimpleDateFormat("dd.MM.yyyy")?.format(Date(date + 3600000))
-        _timeStringFinish.value = SimpleDateFormat("HH:mm")?.format(Date(date + 3600000))
     }
 
     companion object {

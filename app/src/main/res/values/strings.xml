@@ -1,10 +1,10 @@
 <resources>
+
     <string name="app_name">Ежедневник</string>
 
     <string name="title_calendar">Календарь</string>
     <string name="title_notes">События</string>
     <string name="title_new_note">Новое событие</string>
-
     <string name="new_note">Новое событие</string>
     <string name="note">Событие</string>
     <string name="notes_list">Список событий</string>

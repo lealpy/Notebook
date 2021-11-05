@@ -7,7 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="dark_red">#710055</color>
+    <color name="dark_red">#510000</color>
+    <color name="grey">#787878</color>
     <color name="new_note_color">#FFFFFF</color>
     <color name="background_color">#E4E4E4</color>
     <color name="calendar_abbreviations_bar">#E4E4E4</color>

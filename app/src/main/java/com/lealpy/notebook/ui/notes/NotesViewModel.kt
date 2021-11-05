@@ -31,11 +31,15 @@ class NotesViewModel : ViewModel() {
         val notes = notesRepository.getNotesByDate(date)
         notes?.sortBy { it.dateStart }
         _notesLD.value = notes ?: emptyList()
-        _dateString.value = SimpleDateFormat("dd.MM.yyyy")?.format(Date(date))
+        _dateString.value = SimpleDateFormat("dd.MM.yyyy").format(Date(date))
     }
 
     fun onAddNoteBntClicked() {
         _startAddNote.value = date
     }
 
+    fun onDateSelected(dateCalendar: Calendar?) {
+        this.date = dateCalendar?.timeInMillis ?: 0
+        setNotes()
+    }
 }

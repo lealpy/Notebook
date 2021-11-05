@@ -1,7 +1,6 @@
 package com.lealpy.notebook.ui.calendar
 
 import android.R
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +10,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarViewModel : ViewModel() {
-
 
     private val notesRepository = NotesRepository()
 

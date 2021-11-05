@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.lealpy.notebook.App
 import com.lealpy.notebook.R
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.databinding.FragmentNotesBinding
 import com.lealpy.notebook.ui.new_note.NewNoteFragment
 import com.lealpy.notebook.ui.note_description.NoteDescriptionFragment
-import com.vivekkaushik.datepicker.OnDateSelectedListener
+import devs.mulham.horizontalcalendar.HorizontalCalendar
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
+import java.util.*
 
 class NotesFragment : Fragment() {
 
@@ -87,22 +88,26 @@ class NotesFragment : Fragment() {
             viewModel.onAddNoteBntClicked()
         }
 
-        binding.datePickerTimeline.setInitialDate(2021, 10, 1)
-        binding.datePickerTimeline.setOnDateSelectedListener(object : OnDateSelectedListener {
-            override fun onDateSelected(year: Int, month: Int, day: Int, dayOfWeek: Int) {
-                //binding.date.text = "$day.$month.$year"
-                binding.datePickerTimeline.setInitialDate(year, month, day)
+        initCalendar()
+    }
+
+    private fun initCalendar() {
+        val startDate: Calendar = Calendar.getInstance()
+        startDate.add(Calendar.MONTH, -1)
+
+        val endDate: Calendar = Calendar.getInstance()
+        endDate.add(Calendar.MONTH, 1)
+
+        val horizontalCalendar = HorizontalCalendar.Builder(binding.root, R.id.horizontalCalendar)
+            .range(startDate, endDate)
+            .datesNumberOnScreen(5)
+            .build()
+
+        horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
+            override fun onDateSelected(date: Calendar?, position: Int) {
+                viewModel.onDateSelected(date)
             }
-            override fun onDisabledDateSelected(
-                year: Int,
-                month: Int,
-                day: Int,
-                dayOfWeek: Int,
-                isDisabled: Boolean,
-            ) {
-                // Do Something
-            }
-        })
+        }
     }
 
     companion object {
