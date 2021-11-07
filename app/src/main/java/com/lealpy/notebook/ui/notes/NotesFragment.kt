@@ -38,12 +38,11 @@ class NotesFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-
+    ): View {
         _binding = FragmentNotesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        viewModel = ViewModelProvider(this).get(NotesViewModel::class.java)
+        viewModel = ViewModelProvider(this)[NotesViewModel::class.java]
 
         arguments?.getLong(NOTES_CODE)?.let { date ->
             viewModel.onGotDate(date)

@@ -36,11 +36,11 @@ class NewNoteFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentNewNoteBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        viewModel = ViewModelProvider(this).get(NewNoteViewModel::class.java)
+        viewModel = ViewModelProvider(this)[NewNoteViewModel::class.java]
 
         arguments?.getLong(NEW_NOTE_CODE)?.let { date ->
             viewModel.onGotDate(date)
@@ -150,7 +150,7 @@ class NewNoteFragment : Fragment() {
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.nav_host_fragment_activity_main,
-                NotesFragment.newInstance(date ?: 0))
+                NotesFragment.newInstance(date))
             .commit()
     }
 
@@ -171,5 +171,4 @@ class NewNoteFragment : Fragment() {
             }
         }
     }
-
 }

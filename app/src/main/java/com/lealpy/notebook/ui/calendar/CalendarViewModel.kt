@@ -22,7 +22,7 @@ class CalendarViewModel : ViewModel() {
     init {
         val notes = notesRepository.getAllNotesFromDB()
         notes?.forEach { note ->
-            val dateStart: Long = note?.dateStart ?: 0
+            val dateStart: Long = note.dateStart ?: 0
             val yearStart = SimpleDateFormat("yyyy").format(Date(dateStart)).toInt()
             val monthStart = SimpleDateFormat("MM").format(Date(dateStart)).toInt() - 1
             val dayStart = SimpleDateFormat("dd").format(Date(dateStart)).toInt()
@@ -40,6 +40,3 @@ class CalendarViewModel : ViewModel() {
         _startAddNote.value = Date().time
     }
 }
-
-
-

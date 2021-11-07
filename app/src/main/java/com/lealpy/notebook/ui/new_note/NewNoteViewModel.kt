@@ -10,6 +10,7 @@ import com.lealpy.notebook.data.models.DatePickerData
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.data.models.TimePickerData
 import com.lealpy.notebook.data.repository.NotesRepository
+import com.lealpy.notebook.utils.Const
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -78,10 +79,10 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
         hourFinish = hourStart + 1
         minuteFinish = minuteStart
 
-        _dateStringStart.value = SimpleDateFormat("dd.MM.yyyy")?.format(Date(date))
-        _timeStringStart.value = SimpleDateFormat("HH:mm")?.format(Date(date))
-        _dateStringFinish.value = SimpleDateFormat("dd.MM.yyyy")?.format(Date(date + MILLIS_IN_HOUR))
-        _timeStringFinish.value = SimpleDateFormat("HH:mm")?.format(Date(date + MILLIS_IN_HOUR))
+        _dateStringStart.value = SimpleDateFormat("dd.MM.yyyy").format(Date(date))
+        _timeStringStart.value = SimpleDateFormat("HH:mm").format(Date(date))
+        _dateStringFinish.value = SimpleDateFormat("dd.MM.yyyy").format(Date(date + Const.MILLIS_IN_HOUR))
+        _timeStringFinish.value = SimpleDateFormat("HH:mm").format(Date(date + Const.MILLIS_IN_HOUR))
     }
 
     private fun getTimestamp(year: Int, month: Int, day: Int, hour: Int, minute: Int) : Long {
@@ -187,7 +188,6 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
     fun onAddNoteClicked(name: String, description: String) {
         noteName = name
         noteDescription = description
-
         if (noteName != "") {
             addNoteToDB()
             _startNotesFragment.value =
@@ -209,14 +209,8 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
             getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish),
             noteName,
             noteDescription)
-
         notesRepository.addNoteToDB(note)
     }
-
-    companion object {
-        const val MILLIS_IN_HOUR = 3600000
-    }
-
 }
 
 

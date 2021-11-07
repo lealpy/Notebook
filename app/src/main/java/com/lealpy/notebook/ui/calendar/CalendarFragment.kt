@@ -28,9 +28,9 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
-        viewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
+        viewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -61,7 +61,7 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
             parentFragmentManager
                 .beginTransaction()
                 .replace(R.id.nav_host_fragment_activity_main,
-                    NotesFragment.newInstance(date ?: 0))
+                    NotesFragment.newInstance(date))
                 .commit()
         }
 
@@ -81,7 +81,3 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
     }
 }
-
-
-
-
