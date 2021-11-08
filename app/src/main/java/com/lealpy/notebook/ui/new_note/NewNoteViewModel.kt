@@ -10,19 +10,18 @@ import com.lealpy.notebook.data.models.DatePickerData
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.data.models.TimePickerData
 import com.lealpy.notebook.data.repository.NotesRepository
+import com.lealpy.notebook.utils.AppUtils
 import com.lealpy.notebook.utils.Const
-import java.text.SimpleDateFormat
-import java.util.*
 
 class NewNoteViewModel(application: Application): AndroidViewModel(application) {
 
     private val notesRepository = NotesRepository()
 
-    private var yearStart = SimpleDateFormat("yyyy").format(Date()).toInt()
-    private var monthStart = SimpleDateFormat("MM").format(Date()).toInt() - 1
-    private var dayStart = SimpleDateFormat("dd").format(Date()).toInt()
-    private var hourStart = SimpleDateFormat("HH").format(Date()).toInt()
-    private var minuteStart = SimpleDateFormat("mm").format(Date()).toInt()
+    private var yearStart = AppUtils.getCurrentYearInt()
+    private var monthStart = AppUtils.getCurrentMonthInt()
+    private var dayStart = AppUtils.getCurrentDayInt()
+    private var hourStart = AppUtils.getCurrentHourInt()
+    private var minuteStart = AppUtils.getCurrentMinuteInt()
     private var yearFinish = yearStart
     private var monthFinish = monthStart
     private var dayFinish = dayStart
@@ -33,22 +32,22 @@ class NewNoteViewModel(application: Application): AndroidViewModel(application) 
     private var noteDescription = ""
 
     private val _dateStringStart = MutableLiveData(
-        getDateString(yearStart, monthStart, dayStart)
+        AppUtils.getDateStringByInt(yearStart, monthStart, dayStart)
     )
     val dateStringStart: LiveData<String> = _dateStringStart
 
     private val _dateStringFinish = MutableLiveData(
-        getDateString(yearFinish, monthFinish, dayFinish)
+        AppUtils.getDateStringByInt(yearFinish, monthFinish, dayFinish)
     )
     val dateStringFinish: LiveData<String> = _dateStringFinish
 
     private val _timeStringStart = MutableLiveData(
-        getTimeString(hourStart, minuteStart)
+        AppUtils.getTimeStringByInt(hourStart, minuteStart)
     )
     val timeStringStart: LiveData<String> = _timeStringStart
 
     private val _timeStringFinish = MutableLiveData(
-        getTimeString(hourFinish, minuteFinish)
+        AppUtils.getTimeStringByInt(hourFinish, minuteFinish)
     )
     val timeStringFinish: LiveData<String> = _timeStringFinish
 
@@ -68,43 +67,31 @@ class NewNoteViewModel(application: Application): AndroidViewModel(application) 
     val startNotesFragment: LiveData <Long> = _startNotesFragment
 
     fun onGotDate(date: Long) {
-        yearStart = SimpleDateFormat("yyyy").format(Date(date)).toInt()
-        monthStart = SimpleDateFormat("MM").format(Date(date)).toInt() - 1
-        dayStart = SimpleDateFormat("dd").format(Date(date)).toInt()
-        hourStart = SimpleDateFormat("HH").format(Date(date)).toInt()
-        minuteStart = SimpleDateFormat("mm").format(Date(date)).toInt()
+        yearStart = AppUtils.getYearIntByTimestamp(date)
+        monthStart = AppUtils.getMonthIntByTimestamp(date)
+        dayStart = AppUtils.getDayIntByTimestamp(date)
+        hourStart = AppUtils.getHourIntByTimestamp(date)
+        minuteStart = AppUtils.getMinuteIntByTimestamp(date)
         yearFinish = yearStart
         monthFinish = monthStart
         dayFinish = dayStart
         hourFinish = hourStart + 1
         minuteFinish = minuteStart
 
-        _dateStringStart.value = SimpleDateFormat("dd.MM.yyyy").format(Date(date))
-        _timeStringStart.value = SimpleDateFormat("HH:mm").format(Date(date))
-        _dateStringFinish.value = SimpleDateFormat("dd.MM.yyyy").format(Date(date + Const.MILLIS_IN_HOUR))
-        _timeStringFinish.value = SimpleDateFormat("HH:mm").format(Date(date + Const.MILLIS_IN_HOUR))
-    }
-
-    private fun getTimestamp(year: Int, month: Int, day: Int, hour: Int, minute: Int): Long {
-        return GregorianCalendar(year, month, day, hour, minute).timeInMillis
-    }
-
-    private fun getDateString(year: Int, month: Int, day: Int): String {
-        return SimpleDateFormat("dd.MM.yyyy").format(Date(getTimestamp(year, month, day, 0, 0)))
-    }
-
-    private fun getTimeString(hour: Int, minute: Int): String {
-        return SimpleDateFormat("HH:mm").format(Date(getTimestamp(1970, 0, 1, hour, minute)))
+        _dateStringStart.value = AppUtils.getDateStringByTimeStamp(date)
+        _timeStringStart.value = AppUtils.getTimeStringByTimeStamp(date)
+        _dateStringFinish.value = AppUtils.getDateStringByTimeStamp(date + Const.MILLIS_IN_HOUR)
+        _timeStringFinish.value = AppUtils.getTimeStringByTimeStamp(date + Const.MILLIS_IN_HOUR)
     }
 
     private fun refreshDateLD() {
-        _dateStringStart.value = getDateString(yearStart, monthStart, dayStart)
-        _dateStringFinish.value = getDateString(yearFinish, monthFinish, dayFinish)
+        _dateStringStart.value = AppUtils.getDateStringByInt(yearStart, monthStart, dayStart)
+        _dateStringFinish.value = AppUtils.getDateStringByInt(yearFinish, monthFinish, dayFinish)
     }
 
     private fun refreshTimeLD() {
-        _timeStringStart.value = getTimeString(hourStart, minuteStart)
-        _timeStringFinish.value = getTimeString(hourFinish, minuteFinish)
+        _timeStringStart.value = AppUtils.getTimeStringByInt(hourStart, minuteStart)
+        _timeStringFinish.value = AppUtils.getTimeStringByInt(hourFinish, minuteFinish)
     }
 
     fun onDateStartPickerClicked() {
@@ -158,8 +145,8 @@ class NewNoteViewModel(application: Application): AndroidViewModel(application) 
     }
 
     private fun checkSelectedStartBeforeFinish() {
-        val timestampStart = getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
-        val timestampFinish = getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
+        val timestampStart = AppUtils.getTimestampByInt(yearStart, monthStart, dayStart, hourStart, minuteStart)
+        val timestampFinish = AppUtils.getTimestampByInt(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
         if (timestampStart > timestampFinish ) {
             yearFinish = yearStart
             monthFinish = monthStart
@@ -172,8 +159,8 @@ class NewNoteViewModel(application: Application): AndroidViewModel(application) 
     }
 
     private fun checkSelectedFinishAfterStart() {
-        val timestampStart = getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
-        val timestampFinish = getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
+        val timestampStart = AppUtils.getTimestampByInt(yearStart, monthStart, dayStart, hourStart, minuteStart)
+        val timestampFinish = AppUtils.getTimestampByInt(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
         if (timestampStart > timestampFinish ) {
             yearStart = yearFinish
             monthStart = monthFinish
@@ -191,7 +178,7 @@ class NewNoteViewModel(application: Application): AndroidViewModel(application) 
         if (noteName != "") {
             addNoteToDB()
             _startNotesFragment.value =
-                getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
+                AppUtils.getTimestampByInt(yearStart, monthStart, dayStart, hourStart, minuteStart)
 
             val toastText = getApplication<Application>().resources.getString(R.string.note_created)
             Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT).show()
@@ -205,13 +192,10 @@ class NewNoteViewModel(application: Application): AndroidViewModel(application) 
     private fun addNoteToDB() {
         val note = Note(
             notesRepository.getNewID(),
-            getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart),
-            getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish),
+            AppUtils.getTimestampByInt(yearStart, monthStart, dayStart, hourStart, minuteStart),
+            AppUtils.getTimestampByInt(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish),
             noteName,
             noteDescription)
         notesRepository.addNoteToDB(note)
     }
 }
-
-
-

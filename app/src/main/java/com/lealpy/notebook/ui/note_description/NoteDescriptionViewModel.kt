@@ -10,8 +10,7 @@ import com.lealpy.notebook.data.models.DatePickerData
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.data.models.TimePickerData
 import com.lealpy.notebook.data.repository.NotesRepository
-import java.text.SimpleDateFormat
-import java.util.*
+import com.lealpy.notebook.utils.AppUtils
 
 class NoteDescriptionViewModel(application: Application): AndroidViewModel(application) {
 
@@ -74,45 +73,33 @@ class NoteDescriptionViewModel(application: Application): AndroidViewModel(appli
         dateStart = note?.dateStart ?: 0
         dateFinish = note?.dateFinish ?: 0
 
-        yearStart = SimpleDateFormat("yyyy").format(Date(dateStart)).toInt()
-        monthStart = SimpleDateFormat("MM").format(Date(dateStart)).toInt() -1
-        dayStart = SimpleDateFormat("dd").format(Date(dateStart)).toInt()
-        hourStart = SimpleDateFormat("HH").format(Date(dateStart)).toInt()
-        minuteStart = SimpleDateFormat("mm").format(Date(dateStart)).toInt()
-        yearFinish = SimpleDateFormat("yyyy").format(Date(dateFinish)).toInt()
-        monthFinish = SimpleDateFormat("MM").format(Date(dateFinish)).toInt() -1
-        dayFinish = SimpleDateFormat("dd").format(Date(dateFinish)).toInt()
-        hourFinish = SimpleDateFormat("HH").format(Date(dateFinish)).toInt()
-        minuteFinish = SimpleDateFormat("mm").format(Date(dateFinish)).toInt()
+        yearStart = AppUtils.getYearIntByTimestamp(dateStart)
+        monthStart = AppUtils.getMonthIntByTimestamp(dateStart)
+        dayStart = AppUtils.getDayIntByTimestamp(dateStart)
+        hourStart = AppUtils.getHourIntByTimestamp(dateStart)
+        minuteStart = AppUtils.getMinuteIntByTimestamp(dateStart)
+        yearFinish = AppUtils.getYearIntByTimestamp(dateFinish)
+        monthFinish = AppUtils.getMonthIntByTimestamp(dateFinish)
+        dayFinish = AppUtils.getDayIntByTimestamp(dateFinish)
+        hourFinish = AppUtils.getHourIntByTimestamp(dateFinish)
+        minuteFinish = AppUtils.getMinuteIntByTimestamp(dateFinish)
 
         _noteName.value = note?.name ?: ""
         _noteDescription.value = note?.description ?: ""
-        _dateStringStart.value = getDateString(yearStart, monthStart, dayStart)
-        _dateStringFinish.value = getDateString(yearFinish, monthFinish, dayFinish)
-        _timeStringStart.value = getTimeString(hourStart, minuteStart)
-        _timeStringFinish.value = getTimeString(hourFinish, minuteFinish)
-    }
-
-    private fun getTimestamp(year: Int, month: Int, day: Int, hour: Int, minute: Int): Long {
-        return GregorianCalendar(year, month, day, hour, minute).timeInMillis
-    }
-
-    private fun getDateString(year: Int, month: Int, day: Int): String {
-        return SimpleDateFormat("dd.MM.yyyy").format(Date(getTimestamp(year, month, day, 0, 0)))
-    }
-
-    private fun getTimeString(hour: Int, minute: Int): String {
-        return SimpleDateFormat("HH:mm").format(Date(getTimestamp(1970, 0, 1, hour, minute)))
+        _dateStringStart.value = AppUtils.getDateStringByInt(yearStart, monthStart, dayStart)
+        _dateStringFinish.value = AppUtils.getDateStringByInt(yearFinish, monthFinish, dayFinish)
+        _timeStringStart.value = AppUtils.getTimeStringByInt(hourStart, minuteStart)
+        _timeStringFinish.value = AppUtils.getTimeStringByInt(hourFinish, minuteFinish)
     }
 
     private fun refreshDateLD() {
-        _dateStringStart.value = getDateString(yearStart, monthStart, dayStart)
-        _dateStringFinish.value = getDateString(yearFinish, monthFinish, dayFinish)
+        _dateStringStart.value = AppUtils.getDateStringByInt(yearStart, monthStart, dayStart)
+        _dateStringFinish.value = AppUtils.getDateStringByInt(yearFinish, monthFinish, dayFinish)
     }
 
     private fun refreshTimeLD() {
-        _timeStringStart.value = getTimeString(hourStart, minuteStart)
-        _timeStringFinish.value = getTimeString(hourFinish, minuteFinish)
+        _timeStringStart.value = AppUtils.getTimeStringByInt(hourStart, minuteStart)
+        _timeStringFinish.value = AppUtils.getTimeStringByInt(hourFinish, minuteFinish)
     }
 
     fun onDateStartPickerClicked() {
@@ -166,8 +153,8 @@ class NoteDescriptionViewModel(application: Application): AndroidViewModel(appli
     }
 
     private fun checkSelectedStartBeforeFinish() {
-        val timestampStart = getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
-        val timestampFinish = getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
+        val timestampStart = AppUtils.getTimestampByInt(yearStart, monthStart, dayStart, hourStart, minuteStart)
+        val timestampFinish = AppUtils.getTimestampByInt(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
         if (timestampStart > timestampFinish ) {
             yearFinish = yearStart
             monthFinish = monthStart
@@ -180,8 +167,8 @@ class NoteDescriptionViewModel(application: Application): AndroidViewModel(appli
     }
 
     private fun checkSelectedFinishAfterStart() {
-        val timestampStart = getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
-        val timestampFinish = getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
+        val timestampStart = AppUtils.getTimestampByInt(yearStart, monthStart, dayStart, hourStart, minuteStart)
+        val timestampFinish = AppUtils.getTimestampByInt(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish)
         if (timestampStart > timestampFinish ) {
             yearStart = yearFinish
             monthStart = monthFinish
@@ -196,11 +183,10 @@ class NoteDescriptionViewModel(application: Application): AndroidViewModel(appli
     fun onChangeNoteClicked(name: String, description: String) {
         _noteName.value = name
         _noteDescription.value = description
-
         if (noteName.value != "") {
             changeNoteInDB()
             _startNotesFragment.value =
-                getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart)
+                AppUtils.getTimestampByInt(yearStart, monthStart, dayStart, hourStart, minuteStart)
 
             val toastText = getApplication<Application>().resources.getString(R.string.note_changed)
             Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT).show()
@@ -214,20 +200,17 @@ class NoteDescriptionViewModel(application: Application): AndroidViewModel(appli
     private fun changeNoteInDB() {
         val note = Note(
             noteId,
-            getTimestamp(yearStart, monthStart, dayStart, hourStart, minuteStart),
-            getTimestamp(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish),
+            AppUtils.getTimestampByInt(yearStart, monthStart, dayStart, hourStart, minuteStart),
+            AppUtils.getTimestampByInt(yearFinish, monthFinish, dayFinish, hourFinish, minuteFinish),
             _noteName.value,
             _noteDescription.value)
-
         notesRepository.changeNoteInDB(note)
     }
 
     fun onDeleteNoteClicked() {
-
         notesRepository.deleteNoteFromDB(note?.id)
         _startNotesFragment.value =
-            getTimestamp(yearStart, monthStart, dayStart, 0, 0)
-
+            AppUtils.getTimestampByInt(yearStart, monthStart, dayStart, 0, 0)
         val toastText = getApplication<Application>().resources.getString(R.string.note_deleted)
         Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT).show()
     }

@@ -1,11 +1,82 @@
 package com.lealpy.notebook.utils
 
+import java.text.SimpleDateFormat
 import java.util.*
 
 object AppUtils {
 
     fun getGMT(): Long {
         return GregorianCalendar().timeZone.rawOffset.toLong()
+    }
+
+    fun getTimestampByInt(year: Int, month: Int, day: Int, hour: Int, minute: Int): Long {
+        return GregorianCalendar(year, month, day, hour, minute).timeInMillis
+    }
+
+    fun getDateStringByInt(year: Int, month: Int, day: Int): String {
+        return SimpleDateFormat("dd.MM.yyyy")
+            .format(
+                Date(
+                    getTimestampByInt(year, month, day, 0, 0)
+                )
+            )
+    }
+
+    fun getTimeStringByInt(hour: Int, minute: Int): String {
+        return SimpleDateFormat("HH:mm")
+            .format(
+                Date(
+                    getTimestampByInt(1970, 0, 1, hour, minute)
+                )
+            )
+    }
+
+    fun getDateStringByTimeStamp(date: Long): String {
+        return SimpleDateFormat("dd.MM.yyyy").format(Date(date))
+    }
+
+    fun getTimeStringByTimeStamp(date: Long): String {
+        return SimpleDateFormat("HH:mm").format(Date(date))
+    }
+
+    fun getYearIntByTimestamp(date: Long): Int {
+        return SimpleDateFormat("yyyy").format(Date(date)).toInt()
+    }
+
+    fun getMonthIntByTimestamp(date: Long): Int {
+        return SimpleDateFormat("MM").format(Date(date)).toInt() - 1
+    }
+
+    fun getDayIntByTimestamp(date: Long): Int {
+        return SimpleDateFormat("dd").format(Date(date)).toInt()
+    }
+
+    fun getHourIntByTimestamp(date: Long): Int {
+        return SimpleDateFormat("HH").format(Date(date)).toInt()
+    }
+
+    fun getMinuteIntByTimestamp(date: Long): Int {
+        return SimpleDateFormat("mm").format(Date(date)).toInt()
+    }
+
+    fun getCurrentYearInt(): Int {
+        return SimpleDateFormat("yyyy").format(Date()).toInt()
+    }
+
+    fun getCurrentMonthInt(): Int {
+        return SimpleDateFormat("MM").format(Date()).toInt() - 1
+    }
+
+    fun getCurrentDayInt(): Int {
+        return SimpleDateFormat("dd").format(Date()).toInt()
+    }
+
+    fun getCurrentHourInt(): Int {
+        return SimpleDateFormat("HH").format(Date()).toInt()
+    }
+
+    fun getCurrentMinuteInt(): Int {
+        return SimpleDateFormat("mm").format(Date()).toInt()
     }
 
     fun getTimeRange(dateStart: Long?): String {

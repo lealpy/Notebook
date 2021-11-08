@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.databinding.NoteItemBinding
 import com.lealpy.notebook.utils.AppUtils
-import java.text.SimpleDateFormat
 import java.util.*
 
 class NotesAdapter(
@@ -35,7 +34,11 @@ class NotesAdapter(
         }
 
         fun bind(note: Note, previousNote: Note?) {
-            binding.noteName.text = "${getTimeStringByTimestamp(note.dateStart)} - ${note.name}"
+            val text = if(note.dateStart != null && note.name != null) {
+                "${AppUtils.getTimeStringByTimeStamp(note.dateStart!!)} - ${note.name}"
+            }
+            else ""
+            binding.noteName.text = text
             binding.timeRange.text = AppUtils.getTimeRange(note.dateStart?.plus(AppUtils.getGMT()))
 
             val max = 200
@@ -81,12 +84,5 @@ class NotesAdapter(
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Note, newItem: Note) =
             oldItem == newItem
-    }
-
-    private fun getTimeStringByTimestamp(timestamp: Long?): String {
-        return if(timestamp != null) {
-            SimpleDateFormat("HH:mm").format(Date(timestamp))
-        }
-        else ""
     }
 }

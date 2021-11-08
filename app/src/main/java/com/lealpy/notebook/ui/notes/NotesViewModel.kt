@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lealpy.notebook.data.models.Note
 import com.lealpy.notebook.data.repository.NotesRepository
-import java.text.SimpleDateFormat
+import com.lealpy.notebook.utils.AppUtils
 import java.util.*
 
 class NotesViewModel: ViewModel() {
@@ -31,7 +31,7 @@ class NotesViewModel: ViewModel() {
         val notes = notesRepository.getNotesByDate(date)
         notes?.sortBy { it.dateStart }
         _notesLD.value = notes ?: emptyList()
-        _dateString.value = SimpleDateFormat("dd.MM.yyyy").format(Date(date))
+        _dateString.value = AppUtils.getDateStringByTimeStamp(date)
     }
 
     fun onAddNoteBntClicked() {

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.applandeo.materialcalendarview.EventDay
 import com.lealpy.notebook.data.repository.NotesRepository
-import java.text.SimpleDateFormat
+import com.lealpy.notebook.utils.AppUtils
 import java.util.*
 
 class CalendarViewModel: ViewModel() {
@@ -23,11 +23,11 @@ class CalendarViewModel: ViewModel() {
         val notes = notesRepository.getAllNotesFromDB()
         notes?.forEach { note ->
             val dateStart: Long = note.dateStart ?: 0
-            val yearStart = SimpleDateFormat("yyyy").format(Date(dateStart)).toInt()
-            val monthStart = SimpleDateFormat("MM").format(Date(dateStart)).toInt() - 1
-            val dayStart = SimpleDateFormat("dd").format(Date(dateStart)).toInt()
-            val hourStart = SimpleDateFormat("HH").format(Date(dateStart)).toInt()
-            val minuteStart = SimpleDateFormat("mm").format(Date(dateStart)).toInt()
+            val yearStart = AppUtils.getYearIntByTimestamp(dateStart)
+            val monthStart = AppUtils.getMonthIntByTimestamp(dateStart)
+            val dayStart = AppUtils.getDayIntByTimestamp(dateStart)
+            val hourStart = AppUtils.getHourIntByTimestamp(dateStart)
+            val minuteStart = AppUtils.getMinuteIntByTimestamp(dateStart)
             val eventDay = EventDay(
                 GregorianCalendar(yearStart, monthStart, dayStart, hourStart, minuteStart),
                 R.drawable.ic_notification_overlay

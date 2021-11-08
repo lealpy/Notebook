@@ -14,13 +14,10 @@ import com.lealpy.notebook.ui.new_note.NewNoteFragment
 import com.lealpy.notebook.ui.notes.NotesFragment
 import java.util.*
 
-
 class CalendarFragment: DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var viewModel: CalendarViewModel
-
     private lateinit var binding: FragmentCalendarBinding
-
     private val calendar = Calendar.getInstance()
 
     override fun onCreateView(
