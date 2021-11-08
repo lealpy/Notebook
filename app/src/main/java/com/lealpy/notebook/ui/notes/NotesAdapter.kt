@@ -35,7 +35,7 @@ class NotesAdapter(
 
         fun bind(note: Note, previousNote: Note?) {
             val text = if(note.dateStart != null && note.name != null) {
-                "${AppUtils.getTimeStringByTimeStamp(note.dateStart!!)} - ${note.name}"
+                "${AppUtils.getTimeStringByTimestamp(note.dateStart!!)} - ${note.name}"
             }
             else ""
             binding.noteName.text = text

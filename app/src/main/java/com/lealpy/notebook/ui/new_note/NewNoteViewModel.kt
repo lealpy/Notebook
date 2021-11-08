@@ -78,10 +78,10 @@ class NewNoteViewModel(application: Application): AndroidViewModel(application) 
         hourFinish = hourStart + 1
         minuteFinish = minuteStart
 
-        _dateStringStart.value = AppUtils.getDateStringByTimeStamp(date)
-        _timeStringStart.value = AppUtils.getTimeStringByTimeStamp(date)
-        _dateStringFinish.value = AppUtils.getDateStringByTimeStamp(date + Const.MILLIS_IN_HOUR)
-        _timeStringFinish.value = AppUtils.getTimeStringByTimeStamp(date + Const.MILLIS_IN_HOUR)
+        _dateStringStart.value = AppUtils.getDateStringByTimestamp(date)
+        _timeStringStart.value = AppUtils.getTimeStringByTimestamp(date)
+        _dateStringFinish.value = AppUtils.getDateStringByTimestamp(date + Const.MILLIS_IN_HOUR)
+        _timeStringFinish.value = AppUtils.getTimeStringByTimestamp(date + Const.MILLIS_IN_HOUR)
     }
 
     private fun refreshDateLD() {

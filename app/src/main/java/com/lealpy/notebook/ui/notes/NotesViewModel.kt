@@ -31,7 +31,7 @@ class NotesViewModel: ViewModel() {
         val notes = notesRepository.getNotesByDate(date)
         notes?.sortBy { it.dateStart }
         _notesLD.value = notes ?: emptyList()
-        _dateString.value = AppUtils.getDateStringByTimeStamp(date)
+        _dateString.value = AppUtils.getDateStringByTimestamp(date)
     }
 
     fun onAddNoteBntClicked() {

@@ -31,11 +31,11 @@ object AppUtils {
             )
     }
 
-    fun getDateStringByTimeStamp(date: Long): String {
+    fun getDateStringByTimestamp(date: Long): String {
         return SimpleDateFormat("dd.MM.yyyy").format(Date(date))
     }
 
-    fun getTimeStringByTimeStamp(date: Long): String {
+    fun getTimeStringByTimestamp(date: Long): String {
         return SimpleDateFormat("HH:mm").format(Date(date))
     }
 
@@ -79,9 +79,9 @@ object AppUtils {
         return SimpleDateFormat("mm").format(Date()).toInt()
     }
 
-    fun getTimeRange(dateStart: Long?): String {
-        return if (dateStart != null) {
-            when (dateStart % Const.MILLIS_IN_DAY) {
+    fun getTimeRange(date: Long?): String {
+        return if (date != null) {
+            when (date % Const.MILLIS_IN_DAY) {
                 in  0 * Const.MILLIS_IN_HOUR until  1 * Const.MILLIS_IN_HOUR - 1 -> "00:00-01:00"
                 in  1 * Const.MILLIS_IN_HOUR until  2 * Const.MILLIS_IN_HOUR - 1 -> "01:00-02:00"
                 in  2 * Const.MILLIS_IN_HOUR until  3 * Const.MILLIS_IN_HOUR - 1 -> "02:00-03:00"
