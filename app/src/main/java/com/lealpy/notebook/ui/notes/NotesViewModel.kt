@@ -8,26 +8,26 @@ import com.lealpy.notebook.data.repository.NotesRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NotesViewModel : ViewModel() {
+class NotesViewModel: ViewModel() {
 
     private val notesRepository = NotesRepository()
 
     private val _notesLD = MutableLiveData<List<Note>>(emptyList())
     val notesLD: LiveData<List<Note>> = _notesLD
 
-    private var date : Long = Date().time
+    private var date: Long = Date().time
 
-    private val _dateString = MutableLiveData <String> ()
-    val dateString : LiveData <String> = _dateString
+    private val _dateString = MutableLiveData<String>()
+    val dateString: LiveData <String> = _dateString
 
-    private val _startAddNote = MutableLiveData <Long> ()
-    val startNewNote : LiveData <Long> = _startAddNote
+    private val _startAddNote = MutableLiveData<Long>()
+    val startNewNote: LiveData <Long> = _startAddNote
 
     fun onGotDate(date: Long) {
         this.date = date
     }
 
-    fun setNotes () {
+    fun setNotes() {
         val notes = notesRepository.getNotesByDate(date)
         notes?.sortBy { it.dateStart }
         _notesLD.value = notes ?: emptyList()

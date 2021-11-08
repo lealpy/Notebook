@@ -9,15 +9,15 @@ import com.lealpy.notebook.data.repository.NotesRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CalendarViewModel : ViewModel() {
+class CalendarViewModel: ViewModel() {
 
     private val notesRepository = NotesRepository()
 
-    private val _events = MutableLiveData<MutableList<EventDay>>(mutableListOf<EventDay>())
-    val events : LiveData<MutableList<EventDay>> = _events
+    private val _events = MutableLiveData<MutableList<EventDay>>(mutableListOf())
+    val events: LiveData<MutableList<EventDay>> = _events
 
-    private val _startAddNote = MutableLiveData <Long> ()
-    val startNewNote : LiveData <Long> = _startAddNote
+    private val _startAddNote = MutableLiveData <Long>()
+    val startNewNote: LiveData <Long> = _startAddNote
 
     init {
         val notes = notesRepository.getAllNotesFromDB()

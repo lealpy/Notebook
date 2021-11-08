@@ -15,12 +15,11 @@ import com.lealpy.notebook.ui.notes.NotesFragment
 import java.util.*
 
 
-class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class CalendarFragment: DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var viewModel: CalendarViewModel
 
-    private var _binding: FragmentCalendarBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentCalendarBinding
 
     private val calendar = Calendar.getInstance()
 
@@ -32,13 +31,12 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
         viewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
-        _binding = FragmentCalendarBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding = FragmentCalendarBinding.inflate(inflater)
 
         initObservers()
         initViews()
 
-        return root
+        return binding.root
     }
 
     private fun initObservers() {
@@ -68,11 +66,6 @@ class CalendarFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         binding.addNoteBtn.setOnClickListener {
             viewModel.onAddNoteBtnClicked()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

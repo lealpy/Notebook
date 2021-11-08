@@ -5,7 +5,7 @@ import com.lealpy.notebook.utils.Const
 import io.realm.Realm
 import io.realm.kotlin.where
 
-class RealmAppDB : AppDB {
+class RealmAppDB: AppDB {
 
     private var realm = Realm.getDefaultInstance()
 
@@ -16,19 +16,19 @@ class RealmAppDB : AppDB {
             .findFirst()
     }
 
-    override fun getLastID () : Number? {
+    override fun getLastID(): Number? {
         return realm
             .where(Note::class.java)
             .max("id")
     }
 
-    override fun addNoteToDB(note : Note) {
+    override fun addNoteToDB(note: Note) {
         realm.beginTransaction()
         realm.copyToRealmOrUpdate(note)
         realm.commitTransaction()
     }
 
-    override fun changeNoteInDB(note : Note) {
+    override fun changeNoteInDB(note: Note) {
         realm.beginTransaction()
         realm.copyToRealmOrUpdate(note)
         realm.commitTransaction()
@@ -56,7 +56,7 @@ class RealmAppDB : AppDB {
         return notes
     }
 
-    override fun getNotesByDate(date : Long): MutableList<Note>? {
+    override fun getNotesByDate(date: Long): MutableList<Note>? {
         realm.beginTransaction()
         val notes = realm
             .copyFromRealm(
@@ -65,7 +65,7 @@ class RealmAppDB : AppDB {
                     .between(
                         "dateStart",
                         date,
-                        date + (Const.MILLIS_IN_DAY - 1)
+                        date + Const.MILLIS_IN_DAY - 1
                     )
                     .findAll()
             )

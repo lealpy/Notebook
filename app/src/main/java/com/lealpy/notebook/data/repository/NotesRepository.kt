@@ -2,8 +2,8 @@ package com.lealpy.notebook.data.repository
 
 import com.lealpy.notebook.data.db.RealmAppDB
 import com.lealpy.notebook.data.models.Note
+import com.lealpy.notebook.utils.AppUtils
 import com.lealpy.notebook.utils.Const
-import java.util.*
 
 class NotesRepository {
 
@@ -13,7 +13,7 @@ class NotesRepository {
         return realmDB.getNoteFromDB(id)
     }
 
-    fun getNewID () : Long {
+    fun getNewID(): Long {
         val lastId: Number? = realmDB.getLastID()
         return if (lastId == null) {
             1
@@ -22,11 +22,11 @@ class NotesRepository {
         }
     }
 
-    fun addNoteToDB(note : Note) {
+    fun addNoteToDB(note: Note) {
         realmDB.addNoteToDB(note)
     }
 
-    fun changeNoteInDB(note : Note) {
+    fun changeNoteInDB(note: Note) {
         realmDB.changeNoteInDB(note)
     }
 
@@ -38,15 +38,9 @@ class NotesRepository {
         return realmDB.getAllNotesFromDB()
     }
 
-    fun getNotesByDate(date : Long): MutableList<Note>? {
-        val dateAtDayStart = date - ((date + getGMT()) % Const.MILLIS_IN_DAY)
+    fun getNotesByDate(date: Long): MutableList<Note>? {
+        val dateAtDayStart = date - ((date + AppUtils.getGMT()) % Const.MILLIS_IN_DAY)
         return realmDB.getNotesByDate(dateAtDayStart)
     }
 
-    private fun getGMT() : Long {
-        return GregorianCalendar()
-            .timeZone
-            .rawOffset
-            .toLong()
-    }
 }

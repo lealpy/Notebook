@@ -16,14 +16,14 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import java.util.*
 
-class NotesFragment : Fragment() {
+class NotesFragment: Fragment() {
 
     private lateinit var viewModel: NotesViewModel
-    private var _binding: FragmentNotesBinding? = null
-    private val binding get() = _binding!!
+
+    private lateinit var binding: FragmentNotesBinding
 
     private val notesAdapter = NotesAdapter(
-        object : NotesAdapter.OnItemClickListener {
+        object: NotesAdapter.OnItemClickListener {
             override fun onItemClick(note: Note) {
                 parentFragmentManager
                     .beginTransaction()
@@ -39,8 +39,7 @@ class NotesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentNotesBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding = FragmentNotesBinding.inflate(inflater, container, false)
 
         viewModel = ViewModelProvider(this)[NotesViewModel::class.java]
 
@@ -53,12 +52,7 @@ class NotesFragment : Fragment() {
         initObservers()
         initViews()
 
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        return binding.root
     }
 
     private fun initObservers() {
@@ -102,7 +96,7 @@ class NotesFragment : Fragment() {
             .datesNumberOnScreen(5)
             .build()
 
-        horizontalCalendar.calendarListener = object : HorizontalCalendarListener() {
+        horizontalCalendar.calendarListener = object: HorizontalCalendarListener() {
             override fun onDateSelected(date: Calendar?, position: Int) {
                 viewModel.onDateSelected(date)
             }

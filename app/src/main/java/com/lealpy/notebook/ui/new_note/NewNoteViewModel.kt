@@ -14,7 +14,7 @@ import com.lealpy.notebook.utils.Const
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NewNoteViewModel(application: Application) : AndroidViewModel(application) {
+class NewNoteViewModel(application: Application): AndroidViewModel(application) {
 
     private val notesRepository = NotesRepository()
 
@@ -32,40 +32,40 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
     private var noteName = ""
     private var noteDescription = ""
 
-    private val _dateStringStart = MutableLiveData<String> (
+    private val _dateStringStart = MutableLiveData(
         getDateString(yearStart, monthStart, dayStart)
     )
-    val dateStringStart : LiveData<String> = _dateStringStart
+    val dateStringStart: LiveData<String> = _dateStringStart
 
-    private val _dateStringFinish = MutableLiveData<String> (
+    private val _dateStringFinish = MutableLiveData(
         getDateString(yearFinish, monthFinish, dayFinish)
     )
-    val dateStringFinish : LiveData<String> = _dateStringFinish
+    val dateStringFinish: LiveData<String> = _dateStringFinish
 
-    private val _timeStringStart = MutableLiveData<String> (
+    private val _timeStringStart = MutableLiveData(
         getTimeString(hourStart, minuteStart)
     )
-    val timeStringStart : LiveData<String> = _timeStringStart
+    val timeStringStart: LiveData<String> = _timeStringStart
 
-    private val _timeStringFinish = MutableLiveData<String> (
+    private val _timeStringFinish = MutableLiveData(
         getTimeString(hourFinish, minuteFinish)
     )
-    val timeStringFinish : LiveData<String> = _timeStringFinish
+    val timeStringFinish: LiveData<String> = _timeStringFinish
 
-    private val _dateStartPickerData = MutableLiveData<DatePickerData?> (null)
-    val dateStartPickerData : LiveData<DatePickerData?> = _dateStartPickerData
+    private val _dateStartPickerData = MutableLiveData<DatePickerData?>(null)
+    val dateStartPickerData: LiveData<DatePickerData?> = _dateStartPickerData
 
-    private val _dateFinishPickerData = MutableLiveData<DatePickerData?> (null)
-    val dateFinishPickerData : LiveData<DatePickerData?> = _dateFinishPickerData
+    private val _dateFinishPickerData = MutableLiveData<DatePickerData?>(null)
+    val dateFinishPickerData: LiveData<DatePickerData?> = _dateFinishPickerData
 
-    private val _timeStartPickerData = MutableLiveData<TimePickerData?> (null)
-    val timeStartPickerData : LiveData<TimePickerData?> = _timeStartPickerData
+    private val _timeStartPickerData = MutableLiveData<TimePickerData?>(null)
+    val timeStartPickerData: LiveData<TimePickerData?> = _timeStartPickerData
 
-    private val _timeFinishPickerData = MutableLiveData<TimePickerData?> (null)
-    val timeFinishPickerData : LiveData<TimePickerData?> = _timeFinishPickerData
+    private val _timeFinishPickerData = MutableLiveData<TimePickerData?>(null)
+    val timeFinishPickerData: LiveData<TimePickerData?> = _timeFinishPickerData
 
-    private val _startNotesFragment = MutableLiveData<Long> ()
-    val startNotesFragment : LiveData <Long> = _startNotesFragment
+    private val _startNotesFragment = MutableLiveData<Long>()
+    val startNotesFragment: LiveData <Long> = _startNotesFragment
 
     fun onGotDate(date: Long) {
         yearStart = SimpleDateFormat("yyyy").format(Date(date)).toInt()
@@ -85,15 +85,15 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
         _timeStringFinish.value = SimpleDateFormat("HH:mm").format(Date(date + Const.MILLIS_IN_HOUR))
     }
 
-    private fun getTimestamp(year: Int, month: Int, day: Int, hour: Int, minute: Int) : Long {
+    private fun getTimestamp(year: Int, month: Int, day: Int, hour: Int, minute: Int): Long {
         return GregorianCalendar(year, month, day, hour, minute).timeInMillis
     }
 
-    private fun getDateString(year : Int, month : Int, day : Int) : String {
+    private fun getDateString(year: Int, month: Int, day: Int): String {
         return SimpleDateFormat("dd.MM.yyyy").format(Date(getTimestamp(year, month, day, 0, 0)))
     }
 
-    private fun getTimeString(hour : Int, minute : Int) : String {
+    private fun getTimeString(hour: Int, minute: Int): String {
         return SimpleDateFormat("HH:mm").format(Date(getTimestamp(1970, 0, 1, hour, minute)))
     }
 
@@ -108,22 +108,22 @@ class NewNoteViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun onDateStartPickerClicked() {
-        val datePickerData = DatePickerData (yearStart, monthStart, dayStart)
+        val datePickerData = DatePickerData(yearStart, monthStart, dayStart)
         _dateStartPickerData.value = datePickerData
     }
 
     fun onDateFinishPickerClicked() {
-        val datePickerData = DatePickerData (yearFinish, monthFinish, dayFinish)
+        val datePickerData = DatePickerData(yearFinish, monthFinish, dayFinish)
         _dateFinishPickerData.value = datePickerData
     }
 
     fun onTimeStartPickerClicked() {
-        val timePickerData = TimePickerData (hourStart, minuteStart)
+        val timePickerData = TimePickerData(hourStart, minuteStart)
         _timeStartPickerData.value = timePickerData
     }
 
     fun onTimeFinishPickerClicked() {
-        val timePickerData = TimePickerData (hourFinish, minuteFinish)
+        val timePickerData = TimePickerData(hourFinish, minuteFinish)
         _timeFinishPickerData.value = timePickerData
     }
 

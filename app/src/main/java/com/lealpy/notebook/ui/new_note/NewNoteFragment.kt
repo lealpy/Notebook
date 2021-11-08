@@ -12,12 +12,11 @@ import com.lealpy.notebook.R
 import com.lealpy.notebook.databinding.FragmentNewNoteBinding
 import com.lealpy.notebook.ui.notes.NotesFragment
 
-class NewNoteFragment : Fragment() {
+class NewNoteFragment: Fragment() {
 
     private lateinit var viewModel: NewNoteViewModel
 
-    private var _binding: FragmentNewNoteBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentNewNoteBinding
 
     private val onStartDateSetClickListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
         viewModel.onDateStartPicked(year, month, dayOfMonth)
@@ -37,8 +36,7 @@ class NewNoteFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentNewNoteBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding = FragmentNewNoteBinding.inflate(inflater)
 
         viewModel = ViewModelProvider(this)[NewNoteViewModel::class.java]
 
@@ -49,7 +47,7 @@ class NewNoteFragment : Fragment() {
         initObservers()
         initViews()
 
-        return root
+        return binding.root
     }
 
     private fun initObservers() {
@@ -146,17 +144,12 @@ class NewNoteFragment : Fragment() {
         }
     }
 
-    private fun startNotesFragment(date : Long) {
+    private fun startNotesFragment(date: Long) {
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.nav_host_fragment_activity_main,
                 NotesFragment.newInstance(date))
             .commit()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {
