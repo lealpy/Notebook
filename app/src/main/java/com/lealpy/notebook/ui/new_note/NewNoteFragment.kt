@@ -3,16 +3,16 @@ package com.lealpy.notebook.ui.new_note
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.lealpy.notebook.R
 import com.lealpy.notebook.databinding.FragmentNewNoteBinding
 import com.lealpy.notebook.ui.notes.NotesFragment
 
-class NewNoteFragment: Fragment() {
+class NewNoteFragment: Fragment(R.layout.fragment_new_note) {
 
     private lateinit var viewModel: NewNoteViewModel
 
@@ -35,12 +35,10 @@ class NewNoteFragment: Fragment() {
             viewModel.onTimeFinishPicked(hour, minute)
         }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = FragmentNewNoteBinding.inflate(inflater)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentNewNoteBinding.bind(view)
 
         viewModel = ViewModelProvider(this)[NewNoteViewModel::class.java]
 
@@ -50,8 +48,6 @@ class NewNoteFragment: Fragment() {
 
         initObservers()
         initViews()
-
-        return binding.root
     }
 
     private fun initObservers() {
@@ -120,7 +116,10 @@ class NewNoteFragment: Fragment() {
         }
 
         viewModel.startNotesFragment.observe(viewLifecycleOwner) { date ->
-            startNotesFragment(date)
+            findNavController().navigate(
+                R.id.action_newNoteFragment_to_navigation_notes,
+                bundleOf(NotesFragment.NOTES_CODE to date)
+            )
         }
     }
 
@@ -148,24 +147,7 @@ class NewNoteFragment: Fragment() {
         }
     }
 
-    private fun startNotesFragment(date: Long) {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.nav_host_fragment_activity_main,
-                NotesFragment.newInstance(date))
-            .commit()
-    }
-
     companion object {
-        private const val NEW_NOTE_CODE = "NEW_NOTE_CODE"
-
-        @JvmStatic
-        fun newInstance(date: Long): NewNoteFragment {
-            return NewNoteFragment().apply {
-                arguments = Bundle().apply {
-                    putLong(NEW_NOTE_CODE, date)
-                }
-            }
-        }
+        const val NEW_NOTE_CODE = "NEW_NOTE_CODE"
     }
 }

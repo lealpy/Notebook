@@ -3,16 +3,16 @@ package com.lealpy.notebook.ui.note_description
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.lealpy.notebook.R
 import com.lealpy.notebook.databinding.FragmentNoteDescriptionBinding
 import com.lealpy.notebook.ui.notes.NotesFragment
 
-class NoteDescriptionFragment: Fragment() {
+class NoteDescriptionFragment: Fragment(R.layout.fragment_note_description) {
 
     private lateinit var viewModel: NoteDescriptionViewModel
 
@@ -35,14 +35,12 @@ class NoteDescriptionFragment: Fragment() {
             viewModel.onTimeFinishPicked(hour, minute)
         }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         viewModel = ViewModelProvider(this)[NoteDescriptionViewModel::class.java]
 
-        binding = FragmentNoteDescriptionBinding.inflate(inflater)
+        binding = FragmentNoteDescriptionBinding.bind(view)
 
         arguments?.getLong(NOTE_DESCRIPTION_CODE)?.let { id ->
             viewModel.onGotId(id)
@@ -50,8 +48,6 @@ class NoteDescriptionFragment: Fragment() {
 
         initObservers()
         initViews()
-
-        return binding.root
     }
 
     private fun initObservers() {
@@ -128,7 +124,10 @@ class NoteDescriptionFragment: Fragment() {
         }
 
         viewModel.startNotesFragment.observe(viewLifecycleOwner) { date ->
-            startNotesFragment(date)
+            findNavController().navigate(
+                R.id.action_noteDescriptionFragment_to_navigation_notes,
+                bundleOf(NotesFragment.NOTES_CODE to date)
+            )
         }
     }
 
@@ -161,24 +160,7 @@ class NoteDescriptionFragment: Fragment() {
         }
     }
 
-    private fun startNotesFragment(date: Long) {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.nav_host_fragment_activity_main,
-                NotesFragment.newInstance(date))
-            .commit()
-    }
-
     companion object {
-        private const val NOTE_DESCRIPTION_CODE = "NOTE_DESCRIPTION_CODE"
-
-        @JvmStatic
-        fun newInstance(id: Long): NoteDescriptionFragment {
-            return NoteDescriptionFragment().apply {
-                arguments = Bundle().apply {
-                    putLong(NOTE_DESCRIPTION_CODE, id)
-                }
-            }
-        }
+        const val NOTE_DESCRIPTION_CODE = "NOTE_DESCRIPTION_CODE"
     }
 }

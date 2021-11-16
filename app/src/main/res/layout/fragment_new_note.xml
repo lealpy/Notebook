@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    android:background="@color/background_color">
+    android:background="@color/background_color"
+    tools:context="ui.new_note.NewNoteFragment">
 
     <TextView
         android:id="@+id/tittle"

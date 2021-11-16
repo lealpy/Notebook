@@ -9,12 +9,43 @@
         android:id="@+id/navigation_calendar"
         android:name="com.lealpy.notebook.ui.calendar.CalendarFragment"
         android:label="@string/title_calendar"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_navigation_calendar_to_navigation_notes"
+            app:destination="@id/navigation_notes" />
+        <action
+            android:id="@+id/action_navigation_calendar_to_newNoteFragment"
+            app:destination="@id/newNoteFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notes"
         android:name="com.lealpy.notebook.ui.notes.NotesFragment"
         android:label="@string/title_notes"
-        tools:layout="@layout/fragment_notes" />
+        tools:layout="@layout/fragment_notes" >
+        <action
+            android:id="@+id/action_navigation_notes_to_newNoteFragment"
+            app:destination="@id/newNoteFragment" />
+        <action
+            android:id="@+id/action_navigation_notes_to_noteDescriptionFragment"
+            app:destination="@id/noteDescriptionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteDescriptionFragment"
+        android:name="com.lealpy.notebook.ui.note_description.NoteDescriptionFragment"
+        android:label="fragment_note_description"
+        tools:layout="@layout/fragment_note_description" >
+        <action
+            android:id="@+id/action_noteDescriptionFragment_to_navigation_notes"
+            app:destination="@id/navigation_notes" />
+    </fragment>
+    <fragment
+        android:id="@+id/newNoteFragment"
+        android:name="com.lealpy.notebook.ui.new_note.NewNoteFragment"
+        android:label="NewNoteFragment" >
+        <action
+            android:id="@+id/action_newNoteFragment_to_navigation_notes"
+            app:destination="@id/navigation_notes" />
+    </fragment>
 
 </navigation>

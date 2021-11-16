@@ -1,11 +1,11 @@
 package com.lealpy.notebook.ui.notes
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lealpy.notebook.R
 import com.lealpy.notebook.data.models.Note
@@ -16,7 +16,7 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener
 import java.util.*
 
-class NotesFragment: Fragment() {
+class NotesFragment: Fragment(R.layout.fragment_notes) {
 
     private lateinit var viewModel: NotesViewModel
 
@@ -25,21 +25,17 @@ class NotesFragment: Fragment() {
     private val notesAdapter = NotesAdapter(
         object: NotesAdapter.OnItemClickListener {
             override fun onItemClick(note: Note) {
-                parentFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment_activity_main,
-                        NoteDescriptionFragment.newInstance(note.id ?: -1))
-                    .commit()
+                findNavController().navigate(
+                    R.id.action_navigation_notes_to_noteDescriptionFragment,
+                    bundleOf(NoteDescriptionFragment.NOTE_DESCRIPTION_CODE to note.id)
+                )
             }
         }
     )
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = FragmentNotesBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentNotesBinding.bind(view)
 
         viewModel = ViewModelProvider(this)[NotesViewModel::class.java]
 
@@ -51,8 +47,6 @@ class NotesFragment: Fragment() {
 
         initObservers()
         initViews()
-
-        return binding.root
     }
 
     private fun initObservers() {
@@ -65,11 +59,10 @@ class NotesFragment: Fragment() {
         }
 
         viewModel.startNewNote.observe(viewLifecycleOwner) { date ->
-            parentFragmentManager
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main,
-                    NewNoteFragment.newInstance(date ?: 0))
-                .commit()
+            findNavController().navigate(
+                R.id.action_navigation_notes_to_newNoteFragment,
+                bundleOf(NewNoteFragment.NEW_NOTE_CODE to date)
+            )
         }
     }
 
@@ -104,15 +97,6 @@ class NotesFragment: Fragment() {
     }
 
     companion object {
-        private const val NOTES_CODE = "NOTES_CODE"
-
-        @JvmStatic
-        fun newInstance(date: Long): NotesFragment {
-            return NotesFragment().apply {
-                arguments = Bundle().apply {
-                    putLong(NOTES_CODE, date)
-                }
-            }
-        }
+        const val NOTES_CODE = "NOTES_CODE"
     }
 }
